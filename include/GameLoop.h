@@ -7,6 +7,7 @@
 #include <iostream>
 #include "TextureManager.h"
 
+#include "Bird.h"
 
 
 
@@ -20,7 +21,9 @@ private:
     SDL_Event event1;
     SDL_Renderer* renderer;
 
-    Object bg;
+    Bird bird;
+
+
 
 public:
     GameLoop();

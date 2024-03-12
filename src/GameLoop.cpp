@@ -21,7 +21,11 @@ void GameLoop::Initialize()
         if(renderer) {
             std::cout << "Succeeded!" << std::endl;
             GameState = true;
-            bg.CreateTexture("assets/background-night.png", renderer);
+
+            bird.CreateTexture("assets/yellowbird-midflap.png", renderer);
+            bird.CreateTexture1("assets/yellowbird-upflap.png", renderer);
+            bird.CreateTexture2("assets/yellowbird-downflap.png", renderer);
+
         }else {
             std::cout << "Not created!" <<std::endl;
         }
@@ -45,18 +49,18 @@ void GameLoop::Event() {
     if(event1.type == SDL_KEYDOWN) {
         if(event1.key.keysym.sym == SDLK_SPACE) {
             std::cout << "UP!" << std::endl;
+            bird.Jump();
         }
 
     }
 }
 void GameLoop::Update() {
-
-
+    bird.Gravity();
 }
 
 void GameLoop::Render() {
     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, bg.getTexture(), NULL, NULL);
+    bird.Render(renderer);
     SDL_RenderPresent(renderer);
 
 }
