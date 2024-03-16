@@ -5,10 +5,11 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
+#include <vector>
 #include "TextureManager.h"
 
 #include "Bird.h"
-
+#include "Pipe.h"
 
 
 class GameLoop
@@ -23,6 +24,7 @@ private:
 
     Bird bird;
 
+    Pipe pipe[3];
 
 
 public:
