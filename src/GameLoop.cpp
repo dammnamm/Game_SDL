@@ -5,7 +5,9 @@ GameLoop::GameLoop()
     window = NULL;
     renderer = NULL;
     GameState = false;
-
+    for(int i=0; i<3; i++) {
+        upPipe[i].setSrc(0,0,41,253);
+    }
 }
 
 bool GameLoop::getGameState() {
@@ -22,12 +24,18 @@ void GameLoop::Initialize()
             std::cout << "Succeeded!" << std::endl;
             GameState = true;
 
+            //Bird
             bird.CreateTexture("assets/yellowbird-midflap.png", renderer);
             bird.CreateTexture1("assets/yellowbird-upflap.png", renderer);
             bird.CreateTexture2("assets/yellowbird-downflap.png", renderer);
 
+            //Pipe
+            for(int i=0; i < 3; i++)
+            {
+                upPipe[i].CreateTexture("assets/top-pipe.png", renderer);
+            }
             for(int i=0; i<3; i++) {
-                pipe[i].CreateTexture("assets/pipe-green.png",renderer);
+                upPipe[i].setPipe(i);
             }
         }else {
             std::cout << "Not created!" <<std::endl;
@@ -58,17 +66,21 @@ void GameLoop::Event() {
     }
 }
 void GameLoop::Update() {
+
     bird.Gravity();
-    pipe[0].move();
-    pipe[1].move();
-    pipe[2].move();
+    upPipe[0].upPipeUpdate(0);
+    upPipe[1].upPipeUpdate(1);
+    upPipe[2].upPipeUpdate(2);
 }
 
 void GameLoop::Render() {
     SDL_RenderClear(renderer);
-    pipe[0].Render(renderer);
-    pipe[1].Render(renderer);
-    pipe[2].Render(renderer);
+
+    for(Pipe x: upPipe) {
+        x.Render(renderer);
+    }
+
+
     bird.Render(renderer);
     SDL_RenderPresent(renderer);
 

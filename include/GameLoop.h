@@ -24,7 +24,7 @@ private:
 
     Bird bird;
 
-    Pipe pipe[3];
+    Pipe upPipe[3];
 
 
 public:
