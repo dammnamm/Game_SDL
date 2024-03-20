@@ -8,6 +8,7 @@
 #include <vector>
 #include "TextureManager.h"
 
+#include "Background.h"
 #include "Bird.h"
 #include "Pipe.h"
 
@@ -22,6 +23,7 @@ private:
     SDL_Event event1;
     SDL_Renderer* renderer;
 
+    Background background;
     Bird bird;
 
     Pipe upPipe[3];

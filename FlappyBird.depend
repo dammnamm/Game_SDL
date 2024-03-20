@@ -1,14 +1,15 @@
 # depslib dependency file v1.0
-1710667832 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
+1710939555 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
 	"GameLoop.h"
 
-1710667035 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
+1710939455 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
 	"Object.h"
 	<SDL.h>
 	<SDL_image.h>
 	<iostream>
 	<vector>
 	"TextureManager.h"
+	"Background.h"
 	"Bird.h"
 	"Pipe.h"
 
@@ -35,13 +36,19 @@
 1710206731 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
 	"Object.h"
 
-1710668186 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
+1710938496 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
 	"Pipe.h"
 	<ctime>
 	<vector>
 
-1710666799 d:\learning\vnu-uet\2023-2024\project\flappybird\include\pipe.h
+1710938188 d:\learning\vnu-uet\2023-2024\project\flappybird\include\pipe.h
 	"Object.h"
 	<ctime>
 	<vector>
+
+1710939043 d:\learning\vnu-uet\2023-2024\project\flappybird\include\background.h
+	"Object.h"
+
+1710939416 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\background.cpp
+	"Background.h"
 

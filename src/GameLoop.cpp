@@ -21,6 +21,9 @@ void GameLoop::Initialize()
             std::cout << "Succeeded!" << std::endl;
             GameState = true;
 
+            //Background
+            background.CreateTexture("assets/background-night.png", renderer);
+
             //Bird
             bird.CreateTexture("assets/yellowbird-midflap.png", renderer);
             bird.CreateTexture1("assets/yellowbird-upflap.png", renderer);
@@ -49,10 +52,6 @@ void GameLoop::Event() {
     if(event1.type == SDL_QUIT) {
         GameState = false;
     }
-    if(event1.type == SDL_MOUSEMOTION)
-    {
-        std::cout << event1.motion.x << " " << event1.motion.y << std::endl;
-    }
     if(event1.type == SDL_MOUSEBUTTONDOWN) {
         std::cout << "Mouse Pressed" << std::endl;
     }
@@ -79,6 +78,7 @@ void GameLoop::Update() {
 
 void GameLoop::Render() {
     SDL_RenderClear(renderer);
+    background.Render(renderer);
     upPipe[0].Render(renderer);
     upPipe[1].Render(renderer);
     upPipe[2].Render(renderer);
