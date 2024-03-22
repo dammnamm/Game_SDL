@@ -18,7 +18,7 @@ void Floor::Update1()
     {
         xPos1 -= 1;
     }
-    setDest(xPos1, 700, floorWidth, floorHeight);
+    setDest(xPos1, 650, floorWidth, floorHeight);
 }
 
 void Floor::Update2()
@@ -30,7 +30,7 @@ void Floor::Update2()
     {
         xPos2 -= 1;
     }
-    setDest(xPos2, 700, floorWidth, floorHeight);
+    setDest(xPos2, 650, floorWidth, floorHeight);
 }
 
 void Floor::Render(SDL_Renderer* renderer)

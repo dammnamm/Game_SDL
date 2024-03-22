@@ -51,15 +51,16 @@ void GameLoop::Initialize()
 }
 
 void GameLoop::Event() {
-    SDL_PollEvent(&event1);
-    if(event1.type == SDL_QUIT) {
+    SDL_Event event;
+    SDL_PollEvent(&event);
+    if(event.type == SDL_QUIT) {
         GameState = false;
     }
-    if(event1.type == SDL_MOUSEBUTTONDOWN) {
+    if(event.type == SDL_MOUSEBUTTONDOWN) {
         std::cout << "Mouse Pressed" << std::endl;
     }
-    if(event1.type == SDL_KEYDOWN) {
-        if(event1.key.keysym.sym == SDLK_SPACE) {
+    if(event.type == SDL_KEYDOWN) {
+        if(event.key.keysym.sym == SDLK_SPACE) {
             std::cout << "UP!" << std::endl;
             bird.Jump();
         }
@@ -68,22 +69,42 @@ void GameLoop::Event() {
 
 bool GameLoop::CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2)
 {
+    return SDL_HasIntersection(&object1, &object2);
+}
 
+void GameLoop::CollisionDetection()
+{
+    //upPipeCheck
+    if(CheckCollision((&bird)->getDest(), (&upPipe[0])->getDest())||
+       CheckCollision((&bird)->getDest(), (&upPipe[1])->getDest())||
+       CheckCollision((&bird)->getDest(), (&upPipe[2])->getDest()))
+    {
+        GameActive = false;
+    }
+    //downPipeCheck
+    if(CheckCollision((&bird)->getDest(), (&downPipe[0])->getDest())||
+       CheckCollision((&bird)->getDest(), (&downPipe[1])->getDest())||
+       CheckCollision((&bird)->getDest(), (&downPipe[2])->getDest()))
+    {
+        GameActive = false;
+    }
 }
 void GameLoop::Update() {
-    //Bird
-    bird.Gravity();
+    if(GameActive)
+    {
+        //Bird
+        bird.Gravity();
+        //Pipe
+        upPipe[0].upPipeUpdate(0);
+        upPipe[1].upPipeUpdate(1);
+        upPipe[2].upPipeUpdate(2);
+        downPipe[0].downPipeUpdate(0);
+        downPipe[1].downPipeUpdate(1);
+        downPipe[2].downPipeUpdate(2);
+    }
     //Floor
     floor1.Update1();
     floor2.Update2();
-    //Pipe
-    upPipe[0].upPipeUpdate(0);
-    upPipe[1].upPipeUpdate(1);
-    upPipe[2].upPipeUpdate(2);
-    downPipe[0].downPipeUpdate(0);
-    downPipe[1].downPipeUpdate(1);
-    downPipe[2].downPipeUpdate(2);
-
 }
 
 void GameLoop::Render() {
@@ -91,13 +112,16 @@ void GameLoop::Render() {
     background.Render(renderer);
     floor1.Render(renderer);
     floor2.Render(renderer);
-    upPipe[0].Render(renderer);
-    upPipe[1].Render(renderer);
-    upPipe[2].Render(renderer);
-    downPipe[0].Render(renderer);
-    downPipe[1].Render(renderer);
-    downPipe[2].Render(renderer);
-    bird.Render(renderer);
+    if(GameActive)
+    {
+        upPipe[0].Render(renderer);
+        upPipe[1].Render(renderer);
+        upPipe[2].Render(renderer);
+        downPipe[0].Render(renderer);
+        downPipe[1].Render(renderer);
+        downPipe[2].Render(renderer);
+        bird.Render(renderer);
+    }
     SDL_RenderPresent(renderer);
 
 }

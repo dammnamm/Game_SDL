@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1711073199 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
+1711074783 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
 	"GameLoop.h"
 
-1711071790 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
+1711075171 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
 	"Object.h"
 	<SDL.h>
 	<SDL_image.h>
@@ -56,6 +56,6 @@
 1711071667 d:\learning\vnu-uet\2023-2024\project\flappybird\include\floor.h
 	"Object.h"
 
-1711071709 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\floor.cpp
+1711074937 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\floor.cpp
 	"Floor.h"
 
