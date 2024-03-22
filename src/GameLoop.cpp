@@ -29,6 +29,9 @@ void GameLoop::Initialize()
             bird.CreateTexture1("assets/yellowbird-upflap.png", renderer);
             bird.CreateTexture2("assets/yellowbird-downflap.png", renderer);
 
+            //Floor
+            floor1.CreateTexture("assets/floor.png", renderer);
+            floor2.CreateTexture("assets/floor.png", renderer);
             //Pipe
             for(int i=0; i < 3; i++)
             {
@@ -62,10 +65,17 @@ void GameLoop::Event() {
         }
     }
 }
+
+bool GameLoop::CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2)
+{
+
+}
 void GameLoop::Update() {
     //Bird
     bird.Gravity();
-
+    //Floor
+    floor1.Update1();
+    floor2.Update2();
     //Pipe
     upPipe[0].upPipeUpdate(0);
     upPipe[1].upPipeUpdate(1);
@@ -79,6 +89,8 @@ void GameLoop::Update() {
 void GameLoop::Render() {
     SDL_RenderClear(renderer);
     background.Render(renderer);
+    floor1.Render(renderer);
+    floor2.Render(renderer);
     upPipe[0].Render(renderer);
     upPipe[1].Render(renderer);
     upPipe[2].Render(renderer);

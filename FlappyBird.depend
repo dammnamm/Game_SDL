@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1710939555 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
+1711073199 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
 	"GameLoop.h"
 
-1710939455 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
+1711071790 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
 	"Object.h"
 	<SDL.h>
 	<SDL_image.h>
@@ -10,6 +10,7 @@
 	<vector>
 	"TextureManager.h"
 	"Background.h"
+	"Floor.h"
 	"Bird.h"
 	"Pipe.h"
 
@@ -51,4 +52,10 @@
 
 1710939416 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\background.cpp
 	"Background.h"
+
+1711071667 d:\learning\vnu-uet\2023-2024\project\flappybird\include\floor.h
+	"Object.h"
+
+1711071709 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\floor.cpp
+	"Floor.h"
 

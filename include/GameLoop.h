@@ -9,6 +9,7 @@
 #include "TextureManager.h"
 
 #include "Background.h"
+#include "Floor.h"
 #include "Bird.h"
 #include "Pipe.h"
 
@@ -22,10 +23,10 @@ private:
     SDL_Window* window;
     SDL_Event event1;
     SDL_Renderer* renderer;
-
     Background background;
     Bird bird;
-
+    Floor floor1;
+    Floor floor2;
     Pipe upPipe[3];
     Pipe downPipe[3];
 
@@ -37,6 +38,7 @@ public:
     void Initialize();
     void Event();
     void Render();
+    bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
     void Clear();
 };
 #endif // GAMELOOP_H
