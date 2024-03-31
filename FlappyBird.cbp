@@ -36,16 +36,22 @@
 		</Compiler>
 		<Unit filename="include/Background.h" />
 		<Unit filename="include/Bird.h" />
+		<Unit filename="include/Floor.h" />
 		<Unit filename="include/GameLoop.h" />
+		<Unit filename="include/Menu.h" />
 		<Unit filename="include/Object.h" />
 		<Unit filename="include/Pipe.h" />
+		<Unit filename="include/TextObject.h" />
 		<Unit filename="include/TextureManager.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Background.cpp" />
 		<Unit filename="src/Bird.cpp" />
+		<Unit filename="src/Floor.cpp" />
 		<Unit filename="src/GameLoop.cpp" />
+		<Unit filename="src/Menu.cpp" />
 		<Unit filename="src/Object.cpp" />
 		<Unit filename="src/Pipe.cpp" />
+		<Unit filename="src/TextObject.cpp" />
 		<Unit filename="src/TextureManager.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />

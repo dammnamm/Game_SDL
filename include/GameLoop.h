@@ -4,6 +4,8 @@
 #include "Object.h"
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
 #include <iostream>
 #include <vector>
 #include "TextureManager.h"
@@ -12,6 +14,7 @@
 #include "Floor.h"
 #include "Bird.h"
 #include "Pipe.h"
+#include "TextObject.h"
 
 
 class GameLoop
@@ -28,7 +31,16 @@ private:
     Floor floor2;
     Pipe upPipe[3];
     Pipe downPipe[3];
-    bool GameActive = true;
+
+
+    bool isDie = false;
+    bool isPlaying = false;
+
+    //test
+    TTF_Font* testFont;
+    TextObject test;
+    int fontsize = 32;
+    SDL_Color white = { 250, 250, 250 };
 
 public:
     GameLoop();
