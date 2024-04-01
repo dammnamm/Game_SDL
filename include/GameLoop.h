@@ -29,12 +29,10 @@ private:
     Bird bird;
     Floor floor1;
     Floor floor2;
-    Pipe upPipe[3];
-    Pipe downPipe[3];
+    vector<Pipe> upPipe;
+    vector<Pipe> downPipe;
 
-
-    bool isDie = false;
-    bool isPlaying = false;
+    bool isPlaying = true;
 
     //test
     int SCORE = 0;

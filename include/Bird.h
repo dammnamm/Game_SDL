@@ -10,7 +10,7 @@ private:
     SDL_Texture* Tex2;
 
     int animationTimer;
-
+    SDL_Point flipPoint;
     double angle;
     SDL_Point coordinate;
 
@@ -23,10 +23,12 @@ private:
     double lastJump;
 public:
     Bird();
-    void Gravity();
+    void Gravity(bool isPlaying);
     double GetTimeJump(double jumpTimer);
     bool JumpState();
     void Jump();
+    SDL_Point* getPoint();
+    void setPoint(int _x, int _y);
     void CreateTexture1(const char* filePath, SDL_Renderer* renderer);
     void CreateTexture2(const char* filePath, SDL_Renderer* renderer);
     void Render(SDL_Renderer* renderer);
