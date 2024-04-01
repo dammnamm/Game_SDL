@@ -1,6 +1,6 @@
 #ifndef GAMELOOP_H
 #define GAMELOOP_H
-
+#include <bits/stdc++.h>
 #include "Object.h"
 #include <SDL.h>
 #include <SDL_image.h>
@@ -37,8 +37,9 @@ private:
     bool isPlaying = false;
 
     //test
-    TTF_Font* testFont;
-    TextObject test;
+    int SCORE = 0;
+    TTF_Font* scoreFont;
+    TextObject score;
     int fontsize = 32;
     SDL_Color white = { 250, 250, 250 };
 
@@ -51,6 +52,7 @@ public:
     void Render();
     bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
     void CollisionDetection();
+    void ScoreUpdate();
     void Clear();
 };
 #endif // GAMELOOP_H

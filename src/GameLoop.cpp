@@ -6,8 +6,8 @@ GameLoop::GameLoop()
     renderer = NULL;
     GameState = false;
 
-    test.setSrc(0, 0, NULL, NULL);
-    test.setDest(100, 100, 100, 100);
+    score.setSrc(0, 0, NULL, NULL);
+    score.setDest(216, 100, 32, 50);
 }
 
 bool GameLoop::getGameState() {
@@ -59,8 +59,8 @@ void GameLoop::Initialize()
     }
     else
     {
-        testFont = TTF_OpenFont("assets/font/flappy-bird-font/ka1.ttf", fontsize);
-        test.WriteText("TEST", testFont, white, renderer);
+        scoreFont = TTF_OpenFont("assets/font/flappy-bird-font/ka1.ttf", fontsize);
+        score.WriteText(to_string(SCORE), scoreFont, white, renderer);
     }
 
 }
@@ -93,6 +93,10 @@ void GameLoop::Event() {
         {
             Update();
             CollisionDetection();
+            if(!isDie)
+            {
+                ScoreUpdate();
+            }
         }
     }
 }
@@ -128,6 +132,22 @@ void GameLoop::CollisionDetection()
     }
 
 }
+
+void GameLoop::ScoreUpdate()
+{
+    const int birdLeft = bird.getDest().x;
+    //const int birdRight = bird.getDest().x + bird.getDest().w;
+    for(int i=0; i<3; i++) {
+        if(birdLeft == upPipe[i].getDest().x + upPipe[i].getDest().w)
+        {
+            if(!CheckCollision((&bird)->getDest(), (&upPipe[i])->getDest()) &&
+               !CheckCollision((&bird)->getDest(), (&downPipe[i])->getDest()))
+            {
+                SCORE += 1;
+            }
+        }
+    }
+}
 void GameLoop::Update() {
     //Bird
     bird.Gravity();
@@ -141,6 +161,8 @@ void GameLoop::Update() {
     //Floor
     floor1.Update1();
     floor2.Update2();
+    //Test
+    score.WriteText(to_string(SCORE), scoreFont, white, renderer);
 }
 
 void GameLoop::Render() {
@@ -156,7 +178,7 @@ void GameLoop::Render() {
     floor1.Render(renderer);
     floor2.Render(renderer);
     bird.Render(renderer);
-    test.Render(renderer);
+    score.Render(renderer);
     SDL_RenderPresent(renderer);
 
 }
