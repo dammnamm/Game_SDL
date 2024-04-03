@@ -31,6 +31,7 @@ public:
     void setPoint(int _x, int _y);
     void CreateTexture1(const char* filePath, SDL_Renderer* renderer);
     void CreateTexture2(const char* filePath, SDL_Renderer* renderer);
+    void Reset();
     void Render(SDL_Renderer* renderer);
 
 };

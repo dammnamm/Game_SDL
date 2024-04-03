@@ -33,7 +33,7 @@ private:
     vector<Pipe> downPipe;
 
     bool isPlaying = true;
-
+    bool isGameOver = false;
     //test
     int SCORE = 0;
     TTF_Font* scoreFont;

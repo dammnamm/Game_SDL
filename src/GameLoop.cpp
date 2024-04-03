@@ -84,19 +84,19 @@ void GameLoop::Event() {
                 bird.Jump();
             }
         }
-        if(event.key.keysym.sym == SDLK_SPACE && isPlaying == false)
+        if(event.key.keysym.sym == SDLK_SPACE && isGameOver)
         {
+            isGameOver = false;
             isPlaying = true;
-            bird.setSrc(0, 0, 34, 24);
-            bird.setDest(100,384, 68, 48);
+            bird.Reset();
             upPipe.clear();
             downPipe.clear();
-            /*for(int i=0; i<3; i++) {
+            for(int i=0; i<3; i++) {
                 upPipe[i].setSrc(0, 0, 41, 253);
                 downPipe[i].setSrc(0, 0, 41, 253);
                 upPipe[i].setPipe(i);
                 downPipe[i].setPipe(i);
-            }*/
+            }
             Render();
         }
         break;
@@ -132,6 +132,7 @@ void GameLoop::CollisionDetection()
        CheckCollision((&bird)->getDest(), (&upPipe[0])->getDest()) )
     {
         isPlaying = false;
+        isGameOver = true;
     }
 
     //DownPipe
@@ -140,6 +141,7 @@ void GameLoop::CollisionDetection()
        CheckCollision((&bird)->getDest(), (&downPipe[0])->getDest()) )
     {
         isPlaying = false;
+        isGameOver = true;
     }
 
     //Floor
@@ -147,6 +149,7 @@ void GameLoop::CollisionDetection()
        CheckCollision((&bird)->getDest(), (&floor2)->getDest()))
     {
         isPlaying = false;
+        isGameOver = true;
     }
 
 }
@@ -193,7 +196,7 @@ void GameLoop::Render() {
     SDL_RenderClear(renderer);
     background.Render(renderer);
 
-    if(isPlaying)
+    if(!isGameOver)
     {
         upPipe[0].Render(renderer);
         upPipe[1].Render(renderer);
@@ -210,7 +213,6 @@ void GameLoop::Render() {
         score.Render(renderer);
     }
     SDL_RenderPresent(renderer);
-
 }
 
 void GameLoop::Clear() {

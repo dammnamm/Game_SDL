@@ -91,6 +91,20 @@ SDL_Point* Bird::getPoint()
     return &flipPoint;
 }
 
+void Bird::Reset()
+{
+    animationTimer = 0;
+    Ypos = 384;
+    speed = 0;
+    gravity = 0.3;
+    inJump = false;
+    jumpHeight = -7.5;
+    jumpTimer;
+    lastJump = 0;
+    setSrc(0,0, 34, 24);
+    setDest(100,Ypos, 68, 48);
+}
+
 void Bird::Render(SDL_Renderer* renderer)
 {
     animationTimer++;

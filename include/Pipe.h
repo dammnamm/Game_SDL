@@ -6,7 +6,7 @@
 #include <vector>
 
 static int upPipe_H[3]; //Height of up pipe;
-static int xPos[3];
+static int pipePos[3];
 
 class Pipe : public Object
 {
@@ -21,6 +21,7 @@ class Pipe : public Object
         int pipeRandHeight();
         void upPipeUpdate(int i);
         void downPipeUpdate(int i);
+        void Reset();
         void Render(SDL_Renderer* renderer);
 
 };

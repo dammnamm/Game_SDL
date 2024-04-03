@@ -14,7 +14,7 @@ void Pipe::setPipe(int i)
 {
     std::srand(time(NULL));
     setSrc(0, 0, 41, 253);
-    xPos[i] = (i+3)*300;
+    pipePos[i] = (i+3)*300;
     upPipe_H[i] = pipeRandHeight();
     downPipe_H[i] = upPipe_H[i] + space;
 }
@@ -29,23 +29,24 @@ int Pipe::pipeRandHeight()
 
 void Pipe::upPipeUpdate(int i)
 {
-    if(xPos[i] + 82 <= 0 )
+    if(pipePos[i] + 82 <= 0 )
     {
         upPipe_H[i] = pipeRandHeight();
-        xPos[i] = 812;
+        pipePos[i] = 812;
     }
     else
     {
-        xPos[i] -= 1;
-        setDest(xPos[i], upPipe_H[i] - pipeHeight, pipeWidth, pipeHeight);
+        pipePos[i] -= 1;
+        setDest(pipePos[i], upPipe_H[i] - pipeHeight, pipeWidth, pipeHeight);
     }
 }
 
 void Pipe::downPipeUpdate(int i)
 {
     downPipe_H[i] = upPipe_H[i] + space;
-    setDest(xPos[i], downPipe_H[i], pipeWidth, pipeHeight);
+    setDest(pipePos[i], downPipe_H[i], pipeWidth, pipeHeight);
 }
+
 
 void Pipe::Render(SDL_Renderer* renderer)
 {
