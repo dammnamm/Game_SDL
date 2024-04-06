@@ -14,6 +14,7 @@
 #include "Floor.h"
 #include "Bird.h"
 #include "Pipe.h"
+#include "Mouse.h"
 #include "TextObject.h"
 
 
@@ -31,10 +32,14 @@ private:
     Floor floor2;
     vector<Pipe> upPipe;
     vector<Pipe> downPipe;
-
+    Mouse* mouse = new Mouse;
     bool isPlaying = true;
     bool isGameOver = false;
     //test
+    int highScore;
+    TextObject highestScore;
+
+
     int SCORE = 0;
     TTF_Font* scoreFont;
     TextObject score;
@@ -51,6 +56,7 @@ public:
     bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
     void CollisionDetection();
     void ScoreUpdate();
+    void NewGame();
     void Clear();
 };
 #endif // GAMELOOP_H

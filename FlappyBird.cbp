@@ -39,6 +39,7 @@
 		<Unit filename="include/Floor.h" />
 		<Unit filename="include/GameLoop.h" />
 		<Unit filename="include/Menu.h" />
+		<Unit filename="include/Mouse.h" />
 		<Unit filename="include/Object.h" />
 		<Unit filename="include/Pipe.h" />
 		<Unit filename="include/TextObject.h" />
@@ -49,6 +50,7 @@
 		<Unit filename="src/Floor.cpp" />
 		<Unit filename="src/GameLoop.cpp" />
 		<Unit filename="src/Menu.cpp" />
+		<Unit filename="src/Mouse.cpp" />
 		<Unit filename="src/Object.cpp" />
 		<Unit filename="src/Pipe.cpp" />
 		<Unit filename="src/TextObject.cpp" />

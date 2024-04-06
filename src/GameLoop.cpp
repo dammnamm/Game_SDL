@@ -5,9 +5,10 @@ GameLoop::GameLoop()
     window = NULL;
     renderer = NULL;
     GameState = false;
-
     score.setSrc(0, 0, NULL, NULL);
+    highestScore.setSrc(0, 0, NULL, NULL);
     score.setDest(216, 100, 32, 50);
+    highestScore.setDest(216, 150, 32, 50);
     upPipe.resize(3);
     downPipe.resize(3);
 }
@@ -23,6 +24,7 @@ void GameLoop::Initialize()
     if(window){
         renderer = SDL_CreateRenderer(window, -1, 0);
         if(renderer) {
+            SDL_ShowCursor(SDL_DISABLE);
             std::cout << "Succeeded!" << std::endl;
             GameState = true;
 
@@ -47,13 +49,16 @@ void GameLoop::Initialize()
                 upPipe[i].setPipe(i);
                 downPipe[i].setPipe(i);
             }
+            mouse->CreateTexture("assets/image/mouse.png", renderer);
         }else {
             std::cout << "Not created!" <<std::endl;
         }
     }else{
         std::cout << "window not created!" << std::endl;
     }
-
+    std::ifstream file("assets/highscore.txt");
+    file >> highScore;
+    file.close();
     if(TTF_Init() < 0)
     {
         std::cout << "Text faile to initialize! Error: " << TTF_GetError() << std::endl;
@@ -63,8 +68,8 @@ void GameLoop::Initialize()
     {
         scoreFont = TTF_OpenFont("assets/font/flappy-bird-font/ka1.ttf", fontsize);
         score.WriteText(to_string(SCORE), scoreFont, white, renderer);
+        highestScore.WriteText(to_string(highScore), scoreFont, white, renderer);
     }
-
 }
 
 void GameLoop::Event() {
@@ -86,18 +91,7 @@ void GameLoop::Event() {
         }
         if(event.key.keysym.sym == SDLK_SPACE && isGameOver)
         {
-            isGameOver = false;
-            isPlaying = true;
-            bird.Reset();
-            upPipe.clear();
-            downPipe.clear();
-            for(int i=0; i<3; i++) {
-                upPipe[i].setSrc(0, 0, 41, 253);
-                downPipe[i].setSrc(0, 0, 41, 253);
-                upPipe[i].setPipe(i);
-                downPipe[i].setPipe(i);
-            }
-            Render();
+            NewGame();
         }
         break;
     }
@@ -116,13 +110,18 @@ void GameLoop::Event() {
             }
         }
     }
-    std::cout << isPlaying << std::endl;
 }
 
-bool GameLoop::CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2)
+bool GameLoop::CheckCollision(const SDL_Rect& a, const SDL_Rect& b)
 {
-    return SDL_HasIntersection(&object1, &object2);
+    if (a.x + a.w < b.x) return false; // a is left of b
+    if (a.x > b.x + b.w) return false; // a is right of b
+    if (a.y + a.h < b.y) return false; // a is above b
+    if (a.y > b.y + b.h) return false; // a is below b
+    return true; // rectangles overlap
 }
+
+
 
 void GameLoop::CollisionDetection()
 {
@@ -133,6 +132,7 @@ void GameLoop::CollisionDetection()
     {
         isPlaying = false;
         isGameOver = true;
+        ScoreUpdate();
     }
 
     //DownPipe
@@ -142,6 +142,7 @@ void GameLoop::CollisionDetection()
     {
         isPlaying = false;
         isGameOver = true;
+        ScoreUpdate();
     }
 
     //Floor
@@ -150,9 +151,10 @@ void GameLoop::CollisionDetection()
     {
         isPlaying = false;
         isGameOver = true;
+        ScoreUpdate();
     }
-
 }
+
 
 void GameLoop::ScoreUpdate()
 {
@@ -161,7 +163,7 @@ void GameLoop::ScoreUpdate()
         const int birdLeft = bird.getDest().x;
         //const int birdRight = bird.getDest().x + bird.getDest().w;
         for(int i=0; i<3; i++) {
-            if(birdLeft == upPipe[i].getDest().x + upPipe[i].getDest().w)
+            if(birdLeft + bird.getDest().w == upPipe[i].getDest().x )
             {
                 if(!CheckCollision((&bird)->getDest(), (&upPipe[i])->getDest()) &&
                     !CheckCollision((&bird)->getDest(), (&downPipe[i])->getDest()))
@@ -170,6 +172,18 @@ void GameLoop::ScoreUpdate()
                 }
             }
         }
+    }
+    if(isGameOver)
+    {
+        if(SCORE > highScore) {
+            highScore = SCORE;
+        }
+        SCORE = 0;
+        std::ofstream write("assets/highscore.txt");
+        write << highScore;
+        write.close();
+
+        score.WriteText(to_string(SCORE), scoreFont, white, renderer);
     }
 }
 void GameLoop::Update() {
@@ -190,6 +204,7 @@ void GameLoop::Update() {
     floor2.Update2();
     //Test
     score.WriteText(to_string(SCORE), scoreFont, white, renderer);
+    SDL_GetMouseState(&(mouse->cursor.x), &(mouse->cursor.y));
 }
 
 void GameLoop::Render() {
@@ -211,8 +226,35 @@ void GameLoop::Render() {
     {
         bird.Render(renderer);
         score.Render(renderer);
+        if(SCORE < highScore)
+        {
+            highestScore.Render(renderer);
+        }
     }
+    mouse->Render(renderer);
     SDL_RenderPresent(renderer);
+}
+
+
+void GameLoop::NewGame()
+{
+    isGameOver = false;
+    isPlaying = true;
+    bird.Reset();
+    upPipe.clear();
+    downPipe.clear();
+    for(int i=0; i<3; i++) {
+        upPipe[i].setSrc(0, 0, 41, 253);
+        downPipe[i].setSrc(0, 0, 41, 253);
+        upPipe[i].setPipe(i);
+        downPipe[i].setPipe(i);
+    }
+    std::ifstream read("assets/highscore.txt");
+    read >> highScore;
+    highestScore.WriteText(to_string(highScore), scoreFont, white, renderer);
+    read.close();
+
+    Render();
 }
 
 void GameLoop::Clear() {

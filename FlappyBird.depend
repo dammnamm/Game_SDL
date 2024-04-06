@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1712113796 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
+1712413242 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
 	"GameLoop.h"
 
-1712114404 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
+1712412520 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
 	<bits/stdc++.h>
 	"Object.h"
 	<SDL.h>
@@ -16,6 +16,7 @@
 	"Floor.h"
 	"Bird.h"
 	"Pipe.h"
+	"Mouse.h"
 	"TextObject.h"
 
 1711723329 source:d:\learning\vnu-uet\2023-2024\project\flappybird\main.cpp
@@ -41,7 +42,7 @@
 1712113391 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
 	"Object.h"
 
-1712113820 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
+1712155528 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
 	"Pipe.h"
 	<ctime>
 	<vector>
@@ -77,4 +78,10 @@
 1711897529 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\textobject.cpp
 	"TextObject.h"
 	<cstring>
+
+1712413084 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\mouse.cpp
+	"Mouse.h"
+
+1712412365 d:\learning\vnu-uet\2023-2024\project\flappybird\include\mouse.h
+	"Object.h"
 
