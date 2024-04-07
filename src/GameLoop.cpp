@@ -66,7 +66,7 @@ void GameLoop::Initialize()
     }
     else
     {
-        scoreFont = TTF_OpenFont("assets/font/flappy-bird-font/ka1.ttf", fontsize);
+        scoreFont = TTF_OpenFont("assets/font/flappy-bird-font/flappy-bird-font.ttf", fontsize);
         score.WriteText(to_string(SCORE), scoreFont, white, renderer);
         highestScore.WriteText(to_string(highScore), scoreFont, white, renderer);
     }
