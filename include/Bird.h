@@ -8,7 +8,8 @@ class Bird:public Object
 private:
     SDL_Texture* Tex1;
     SDL_Texture* Tex2;
-
+    int birdWidth;
+    int birdHeight;
     int animationTimer;
     SDL_Point flipPoint;
     double angle;

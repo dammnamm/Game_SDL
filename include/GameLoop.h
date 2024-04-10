@@ -15,6 +15,7 @@
 #include "Bird.h"
 #include "Pipe.h"
 #include "Mouse.h"
+#include "Button.h"
 #include "TextObject.h"
 
 
@@ -33,12 +34,13 @@ private:
     vector<Pipe> upPipe;
     vector<Pipe> downPipe;
     Mouse* mouse = new Mouse;
-    bool isPlaying = true;
+    bool isPlaying = false;
     bool isGameOver = false;
+    //
+    Button* playButton = new Button(0,0);
     //test
     int highScore;
     TextObject highestScore;
-
 
     int SCORE = 0;
     TTF_Font* scoreFont;

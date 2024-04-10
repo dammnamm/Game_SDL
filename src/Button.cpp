@@ -2,31 +2,32 @@
 
 Button::Button()
 {
-    selected = false;
+    isSellected = false;
 }
 
-void Button::setCoordinates(int x, int y)
+Button::Button(int x, int y)
 {
-    setDest(x, y, NULL, NULL);
+    src = {x, y, 240, 144};
+    dest = {x, y, 240, 144};
+    isSellected = false;
 }
+
 
 void Button::CheckSelected(Mouse* mouse)
 {
-    SDL_Rect& dest = getDest();
-    SDL_Rect& src = getSrc();
     if (SDL_HasIntersection(&(mouse->tip), &dest))
     {
-        selected = true;
-        src.x = 400;
+        isSellected = true;
+        src.x = 248;
     }
     else
     {
-        selected = false;
+        isSellected = false;
         src.x = 0;
     }
 }
 
 void Button::Render(SDL_Renderer* renderer)
 {
-    SDL_RenderCopy(renderer, getTexture(), &getSrc(), &getDest());
+    SDL_RenderCopy(renderer, getTexture(), &src, &dest);
 }

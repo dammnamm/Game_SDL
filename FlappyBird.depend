@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1712456776 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
+1712761084 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
 	"GameLoop.h"
 
-1712412520 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
+1712761441 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
 	<bits/stdc++.h>
 	"Object.h"
 	<SDL.h>
@@ -17,51 +17,52 @@
 	"Bird.h"
 	"Pipe.h"
 	"Mouse.h"
+	"Button.h"
 	"TextObject.h"
 
-1711723329 source:d:\learning\vnu-uet\2023-2024\project\flappybird\main.cpp
+1712720090 source:d:\learning\vnu-uet\2023-2024\project\flappybird\main.cpp
 	"GameLoop.h"
 
-1709568090 d:\learning\vnu-uet\2023-2024\project\flappybird\include\texturemanager.h
+1712720090 d:\learning\vnu-uet\2023-2024\project\flappybird\include\texturemanager.h
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
 
-1709566980 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\texturemanager.cpp
+1712720090 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\texturemanager.cpp
 	"TextureManager.h"
 
-1709568376 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\object.cpp
+1712720090 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\object.cpp
 	"Object.h"
 
-1709738647 d:\learning\vnu-uet\2023-2024\project\flappybird\include\object.h
+1712720090 d:\learning\vnu-uet\2023-2024\project\flappybird\include\object.h
 	"TextureManager.h"
 
-1712113506 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\bird.cpp
+1712721627 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\bird.cpp
 	"Bird.h"
 
-1712113391 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
+1712721157 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
 	"Object.h"
 
-1712155528 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
+1712756960 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
 	"Pipe.h"
 	<ctime>
 	<vector>
 
-1712113662 d:\learning\vnu-uet\2023-2024\project\flappybird\include\pipe.h
+1712720090 d:\learning\vnu-uet\2023-2024\project\flappybird\include\pipe.h
 	"Object.h"
 	<ctime>
 	<vector>
 
-1710939043 d:\learning\vnu-uet\2023-2024\project\flappybird\include\background.h
+1712720090 d:\learning\vnu-uet\2023-2024\project\flappybird\include\background.h
 	"Object.h"
 
-1710939416 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\background.cpp
+1712720090 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\background.cpp
 	"Background.h"
 
-1711071667 d:\learning\vnu-uet\2023-2024\project\flappybird\include\floor.h
+1712720090 d:\learning\vnu-uet\2023-2024\project\flappybird\include\floor.h
 	"Object.h"
 
-1711074937 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\floor.cpp
+1712720090 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\floor.cpp
 	"Floor.h"
 
 1711413375 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\menu.cpp
@@ -69,26 +70,26 @@
 
 1711413387 d:\learning\vnu-uet\2023-2024\project\flappybird\include\menu.h
 
-1711897426 d:\learning\vnu-uet\2023-2024\project\flappybird\include\textobject.h
+1712720090 d:\learning\vnu-uet\2023-2024\project\flappybird\include\textobject.h
 	"Object.h"
 	<SDL.h>
 	<SDL_ttf.h>
 	<iostream>
 
-1711897529 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\textobject.cpp
+1712720090 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\textobject.cpp
 	"TextObject.h"
 	<cstring>
 
-1712413084 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\mouse.cpp
+1712720090 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\mouse.cpp
 	"Mouse.h"
 
-1712412365 d:\learning\vnu-uet\2023-2024\project\flappybird\include\mouse.h
+1712720090 d:\learning\vnu-uet\2023-2024\project\flappybird\include\mouse.h
 	"Object.h"
 
-1712456412 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\button.cpp
+1712760772 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\button.cpp
 	"Button.h"
 
-1712456420 d:\learning\vnu-uet\2023-2024\project\flappybird\include\button.h
+1712760256 d:\learning\vnu-uet\2023-2024\project\flappybird\include\button.h
 	"Object.h"
 	"Mouse.h"
 

@@ -5,11 +5,12 @@
 class Button:public Object
 {
     public:
-        bool selected;
         Button();
-        void setCoordinates(int x, int y);
+        Button(int x, int y);
+        SDL_Rect src, dest;
         void CheckSelected(Mouse* mouse);
-        void Render(SDL_Renderer* ren);
+        void Render(SDL_Renderer* renderer);
+        bool isSellected;
     private:
 };
 

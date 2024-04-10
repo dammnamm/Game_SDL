@@ -29,27 +29,28 @@ void GameLoop::Initialize()
             GameState = true;
 
             //Background
-            background.CreateTexture("assets/image/background-night.png", renderer);
+            background.CreateTexture("assets/image/background.png", renderer);
 
             //Bird
-            bird.CreateTexture("assets/image/yellowbird-midflap.png", renderer);
-            bird.CreateTexture1("assets/image/yellowbird-upflap.png", renderer);
-            bird.CreateTexture2("assets/image/yellowbird-downflap.png", renderer);
+            bird.CreateTexture("assets/image/player1.png", renderer);
+            bird.CreateTexture1("assets/image/player2.png", renderer);
+            bird.CreateTexture2("assets/image/player3.png", renderer);
 
             //Floor
-            floor1.CreateTexture("assets/image/floor.png", renderer);
-            floor2.CreateTexture("assets/image/floor.png", renderer);
+            floor1.CreateTexture("assets/image/land.png", renderer);
+            floor2.CreateTexture("assets/image/land.png", renderer);
             //Pipe
             for(int i=0; i < 3; i++)
             {
-                upPipe[i].CreateTexture("assets/image/top-pipe.png", renderer);
-                downPipe[i].CreateTexture("assets/image/bot-pipe.png", renderer);
+                upPipe[i].CreateTexture("assets/image/pillarTop.png", renderer);
+                downPipe[i].CreateTexture("assets/image/pillarBottom.png", renderer);
             }
             for(int i=0; i<3; i++) {
                 upPipe[i].setPipe(i);
                 downPipe[i].setPipe(i);
             }
             mouse->CreateTexture("assets/image/mouse.png", renderer);
+            playButton->CreateTexture("assets/image/playButton.png",renderer);
         }else {
             std::cout << "Not created!" <<std::endl;
         }
@@ -87,6 +88,10 @@ void GameLoop::Event() {
         {
             if(!bird.JumpState() && isPlaying) {
                 bird.Jump();
+            }
+            if(!isPlaying)
+            {
+                isPlaying = true;
             }
         }
         if(event.key.keysym.sym == SDLK_SPACE && isGameOver)
@@ -204,6 +209,7 @@ void GameLoop::Update() {
     floor2.Update2();
     //Test
     score.WriteText(to_string(SCORE), scoreFont, white, renderer);
+    playButton->CheckSelected(mouse);
     SDL_GetMouseState(&(mouse->cursor.x), &(mouse->cursor.y));
 }
 
@@ -222,7 +228,7 @@ void GameLoop::Render() {
     }
     floor1.Render(renderer);
     floor2.Render(renderer);
-    if(isPlaying)
+    if(isPlaying && !isGameOver)
     {
         bird.Render(renderer);
         score.Render(renderer);
@@ -231,6 +237,7 @@ void GameLoop::Render() {
             highestScore.Render(renderer);
         }
     }
+    playButton->Render(renderer);
     mouse->Render(renderer);
     SDL_RenderPresent(renderer);
 }
