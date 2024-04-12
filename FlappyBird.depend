@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1712761084 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
+1712880387 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
 	"GameLoop.h"
 
-1712761441 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
+1712902048 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
 	<bits/stdc++.h>
 	"Object.h"
 	<SDL.h>
@@ -43,7 +43,7 @@
 1712721157 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
 	"Object.h"
 
-1712756960 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
+1712901616 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
 	"Pipe.h"
 	<ctime>
 	<vector>
@@ -86,10 +86,10 @@
 1712720090 d:\learning\vnu-uet\2023-2024\project\flappybird\include\mouse.h
 	"Object.h"
 
-1712760772 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\button.cpp
+1712880020 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\button.cpp
 	"Button.h"
 
-1712760256 d:\learning\vnu-uet\2023-2024\project\flappybird\include\button.h
+1712880327 d:\learning\vnu-uet\2023-2024\project\flappybird\include\button.h
 	"Object.h"
 	"Mouse.h"
 

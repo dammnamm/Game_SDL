@@ -49,8 +49,13 @@ void GameLoop::Initialize()
                 upPipe[i].setPipe(i);
                 downPipe[i].setPipe(i);
             }
+            //Mouse
             mouse->CreateTexture("assets/image/mouse.png", renderer);
-            playButton->CreateTexture("assets/image/playButton.png",renderer);
+            //Button
+            playButton->CreateTexture("assets/image/button.png",renderer);
+            quitButton->CreateTexture("assets/image/button.png",renderer);
+            playButton->setCordinate(123,320);
+            quitButton->setCordinate(123,420);
         }else {
             std::cout << "Not created!" <<std::endl;
         }
@@ -100,6 +105,19 @@ void GameLoop::Event() {
         }
         break;
     }
+    case SDL_MOUSEBUTTONUP:
+        if(event.button.button == SDL_BUTTON_LEFT)
+        {
+            if(playButton->isSellected)
+            {
+                std::cout << "PLAY" << std::endl;
+            }
+            if(quitButton->isSellected)
+            {
+                std::cout << "QUIT" << std::endl;
+            }
+        }
+        break;
     case SDL_QUIT:
     {
         GameState = false;
@@ -119,11 +137,7 @@ void GameLoop::Event() {
 
 bool GameLoop::CheckCollision(const SDL_Rect& a, const SDL_Rect& b)
 {
-    if (a.x + a.w < b.x) return false; // a is left of b
-    if (a.x > b.x + b.w) return false; // a is right of b
-    if (a.y + a.h < b.y) return false; // a is above b
-    if (a.y > b.y + b.h) return false; // a is below b
-    return true; // rectangles overlap
+    return SDL_HasIntersection(&a, &b);
 }
 
 
@@ -209,8 +223,9 @@ void GameLoop::Update() {
     floor2.Update2();
     //Test
     score.WriteText(to_string(SCORE), scoreFont, white, renderer);
-    playButton->CheckSelected(mouse);
     SDL_GetMouseState(&(mouse->cursor.x), &(mouse->cursor.y));
+    playButton->CheckSelected(mouse);
+    quitButton->CheckSelected(mouse);
 }
 
 void GameLoop::Render() {
@@ -238,6 +253,7 @@ void GameLoop::Render() {
         }
     }
     playButton->Render(renderer);
+    quitButton->Render(renderer);
     mouse->Render(renderer);
     SDL_RenderPresent(renderer);
 }

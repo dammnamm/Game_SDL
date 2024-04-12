@@ -36,8 +36,12 @@ private:
     Mouse* mouse = new Mouse;
     bool isPlaying = false;
     bool isGameOver = false;
-    //
+    //GameState
+    enum GameEvent {MENU, GAMEPLAY, GAMEOVER};
+    GameEvent currentState;
+    //Button
     Button* playButton = new Button(0,0);
+    Button* quitButton = new Button(0,368);
     //test
     int highScore;
     TextObject highestScore;
@@ -56,6 +60,9 @@ public:
     void Event();
     void Render();
     bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
+    void Menu();
+    void GamePlay();
+    void GameOver();
     void CollisionDetection();
     void ScoreUpdate();
     void NewGame();

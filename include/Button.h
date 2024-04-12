@@ -8,10 +8,10 @@ class Button:public Object
         Button();
         Button(int x, int y);
         SDL_Rect src, dest;
-        void CheckSelected(Mouse* mouse);
+        void setCordinate(int _x, int _y);
+        void CheckSelected(const Mouse* mouse);
         void Render(SDL_Renderer* renderer);
         bool isSellected;
-    private:
 };
 
 #endif // BUTTON_H

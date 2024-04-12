@@ -7,18 +7,24 @@ Button::Button()
 
 Button::Button(int x, int y)
 {
-    src = {x, y, 240, 144};
-    dest = {x, y, 240, 144};
+    src = {x, y, 384, 168};
+    dest = {x, y, 185, 81};
     isSellected = false;
 }
 
+void Button::setCordinate(int _x, int _y)
+{
+    dest.x = _x;
+    dest.y = _y;
+}
 
-void Button::CheckSelected(Mouse* mouse)
+
+void Button::CheckSelected(const Mouse* mouse)
 {
     if (SDL_HasIntersection(&(mouse->tip), &dest))
     {
         isSellected = true;
-        src.x = 248;
+        src.x = 400;
     }
     else
     {
