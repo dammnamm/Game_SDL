@@ -27,6 +27,7 @@ private:
     bool GameState;
     SDL_Window* window;
     SDL_Renderer* renderer;
+    //GAMEPLAY
     Background background;
     Bird bird;
     Floor floor1;
@@ -36,16 +37,21 @@ private:
     Mouse* mouse = new Mouse;
     bool isPlaying = false;
     bool isGameOver = false;
+    //GAMEOVER
+    Background gameOverBg;
+    Button* replayButton = new Button(0, 736);
+    //Menu
+    Background menuBg;
+    Button* playButton = new Button(0,0);
+    Button* quitButton = new Button(0,368);
     //GameState
     enum GameEvent {MENU, GAMEPLAY, GAMEOVER};
     GameEvent currentState;
-    //Button
-    Button* playButton = new Button(0,0);
-    Button* quitButton = new Button(0,368);
-    //test
+    //Score
+    int textWidth = 64;
+    int textHeight = 100;
     int highScore;
     TextObject highestScore;
-
     int SCORE = 0;
     TTF_Font* scoreFont;
     TextObject score;
@@ -60,9 +66,6 @@ public:
     void Event();
     void Render();
     bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
-    void Menu();
-    void GamePlay();
-    void GameOver();
     void CollisionDetection();
     void ScoreUpdate();
     void NewGame();

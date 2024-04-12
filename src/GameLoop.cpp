@@ -7,8 +7,8 @@ GameLoop::GameLoop()
     GameState = false;
     score.setSrc(0, 0, NULL, NULL);
     highestScore.setSrc(0, 0, NULL, NULL);
-    score.setDest(216, 100, 32, 50);
-    highestScore.setDest(216, 150, 32, 50);
+    score.setDest(184, 100, textWidth, textHeight);
+    highestScore.setDest(216, 150, textWidth, textHeight);
     upPipe.resize(3);
     downPipe.resize(3);
 }
@@ -30,6 +30,8 @@ void GameLoop::Initialize()
 
             //Background
             background.CreateTexture("assets/image/background.png", renderer);
+            menuBg.CreateTexture("assets/image/menubackground.png", renderer);
+            gameOverBg.CreateTexture("assets/image/gameoverbackground.png", renderer);
 
             //Bird
             bird.CreateTexture("assets/image/player1.png", renderer);
@@ -54,8 +56,10 @@ void GameLoop::Initialize()
             //Button
             playButton->CreateTexture("assets/image/button.png",renderer);
             quitButton->CreateTexture("assets/image/button.png",renderer);
+            replayButton->CreateTexture("assets/image/button.png", renderer);
             playButton->setCordinate(123,320);
             quitButton->setCordinate(123,420);
+            replayButton->setCordinate(123,550);
         }else {
             std::cout << "Not created!" <<std::endl;
         }
@@ -81,57 +85,65 @@ void GameLoop::Initialize()
 void GameLoop::Event() {
     SDL_Event event;
     SDL_PollEvent(&event);
-    switch(event.type)
+    switch (currentState)
     {
-        if(!isPlaying) {
-            std::cout << "ISDIE" << std::endl;
+        case MENU:
+        {
+            if(event.type == SDL_MOUSEBUTTONUP)
+            {
+                if(event.button.button == SDL_BUTTON_LEFT)
+                {
+                    if(playButton->isSellected)
+                    {
+                        currentState = GAMEPLAY;
+                    }
+                    if(quitButton->isSellected)
+                    {
+                        GameState = false;
+                    }
+                }
+            }
             break;
         }
-    case SDL_KEYDOWN:
-    {
-        if(event.key.keysym.sym == SDLK_SPACE)
+        case GAMEPLAY:
         {
-            if(!bird.JumpState() && isPlaying) {
-                bird.Jump();
-            }
-            if(!isPlaying)
+            if(event.type == SDL_KEYDOWN)
             {
-                isPlaying = true;
+                if(event.key.keysym.sym == SDLK_SPACE)
+                {
+                    if(!bird.JumpState() && isPlaying)
+                    {
+                        bird.Jump();
+                    }
+                    if(!isPlaying)
+                    {
+                        isPlaying = true;
+                    }
+                }
             }
+
+            break;
         }
-        if(event.key.keysym.sym == SDLK_SPACE && isGameOver)
+        case GAMEOVER:
         {
-            NewGame();
+            if(event.type == SDL_MOUSEBUTTONUP)
+            {
+                if(event.button.button == SDL_BUTTON_LEFT)
+                {
+                    if(replayButton->isSellected)
+                    {
+                        NewGame();
+                        currentState = GAMEPLAY;
+                    }
+                }
+            }
+            break;
         }
-        break;
+
     }
-    case SDL_MOUSEBUTTONUP:
-        if(event.button.button == SDL_BUTTON_LEFT)
-        {
-            if(playButton->isSellected)
-            {
-                std::cout << "PLAY" << std::endl;
-            }
-            if(quitButton->isSellected)
-            {
-                std::cout << "QUIT" << std::endl;
-            }
-        }
-        break;
-    case SDL_QUIT:
+    if(event.type == SDL_QUIT)
     {
         GameState = false;
-        break;
-    }
-    default:
-        {
-            Update();
-            CollisionDetection();
-            if(isPlaying)
-            {
-                ScoreUpdate();
-            }
-        }
     }
 }
 
@@ -151,6 +163,7 @@ void GameLoop::CollisionDetection()
     {
         isPlaying = false;
         isGameOver = true;
+        currentState = GAMEOVER;
         ScoreUpdate();
     }
 
@@ -161,6 +174,7 @@ void GameLoop::CollisionDetection()
     {
         isPlaying = false;
         isGameOver = true;
+        currentState = GAMEOVER;
         ScoreUpdate();
     }
 
@@ -170,6 +184,7 @@ void GameLoop::CollisionDetection()
     {
         isPlaying = false;
         isGameOver = true;
+        currentState = GAMEOVER;
         ScoreUpdate();
     }
 }
@@ -188,6 +203,13 @@ void GameLoop::ScoreUpdate()
                     !CheckCollision((&bird)->getDest(), (&downPipe[i])->getDest()))
                 {
                     SCORE += 1;
+                    // Adjust score text size based on the number of digits in the score
+                    int scoreDigits = std::to_string(SCORE).length();
+                    int textSizeMultiplier = scoreDigits > 1 ? 2 : 1; // Increase text size for two or more digits
+                    int scoreTextWidth = textWidth * textSizeMultiplier;
+                    // Calculate x-coordinate to center the score text
+                    int xCenter = (WIDTH - scoreTextWidth) / 2;
+                    score.setDest(xCenter, 100, scoreTextWidth, textHeight);
                 }
             }
         }
@@ -202,58 +224,86 @@ void GameLoop::ScoreUpdate()
         write << highScore;
         write.close();
 
+        // Reset score text size and position to default
+        int xCenter = (WIDTH - textWidth) / 2;
+        score.setDest(xCenter, 100, textWidth, textHeight);
+
         score.WriteText(to_string(SCORE), scoreFont, white, renderer);
     }
 }
-void GameLoop::Update() {
-    if(isPlaying) {
-        //Bird
-        bird.Gravity(isPlaying);
-        //Pipe
-        upPipe[0].upPipeUpdate(0);
-        upPipe[1].upPipeUpdate(1);
-        upPipe[2].upPipeUpdate(2);
-        downPipe[0].downPipeUpdate(0);
-        downPipe[1].downPipeUpdate(1);
-        downPipe[2].downPipeUpdate(2);
-    }
 
-    //Floor
-    floor1.Update1();
-    floor2.Update2();
-    //Test
-    score.WriteText(to_string(SCORE), scoreFont, white, renderer);
+
+
+
+void GameLoop::Update() {
+    if(currentState == GAMEPLAY)
+    {
+        if(isPlaying) {
+            //Bird
+            bird.Gravity(isPlaying);
+            //Pipe
+            upPipe[0].upPipeUpdate(0);
+            upPipe[1].upPipeUpdate(1);
+            upPipe[2].upPipeUpdate(2);
+            downPipe[0].downPipeUpdate(0);
+            downPipe[1].downPipeUpdate(1);
+            downPipe[2].downPipeUpdate(2);
+            ScoreUpdate();
+        }
+
+        //Floor
+        floor1.Update1();
+        floor2.Update2();
+        //Test
+        score.WriteText(to_string(SCORE), scoreFont, white, renderer);
+        CollisionDetection();
+    }
+    if(currentState == MENU)
+    {
+        playButton->CheckSelected(mouse);
+        quitButton->CheckSelected(mouse);
+    }
+    if(currentState == GAMEOVER)
+    {
+        replayButton->CheckSelected(mouse);
+    }
     SDL_GetMouseState(&(mouse->cursor.x), &(mouse->cursor.y));
-    playButton->CheckSelected(mouse);
-    quitButton->CheckSelected(mouse);
 }
 
 void GameLoop::Render() {
     SDL_RenderClear(renderer);
-    background.Render(renderer);
 
-    if(!isGameOver)
+    if(currentState == MENU)
     {
-        upPipe[0].Render(renderer);
-        upPipe[1].Render(renderer);
-        upPipe[2].Render(renderer);
-        downPipe[0].Render(renderer);
-        downPipe[1].Render(renderer);
-        downPipe[2].Render(renderer);
+        menuBg.Render(renderer);
+        playButton->Render(renderer);
+        quitButton->Render(renderer);
     }
-    floor1.Render(renderer);
-    floor2.Render(renderer);
-    if(isPlaying && !isGameOver)
+    else if(currentState == GAMEPLAY)
     {
-        bird.Render(renderer);
-        score.Render(renderer);
-        if(SCORE < highScore)
+        background.Render(renderer);
+
+        if(!isGameOver)
         {
-            highestScore.Render(renderer);
+            upPipe[0].Render(renderer);
+            upPipe[1].Render(renderer);
+            upPipe[2].Render(renderer);
+            downPipe[0].Render(renderer);
+            downPipe[1].Render(renderer);
+            downPipe[2].Render(renderer);
         }
+        floor1.Render(renderer);
+        floor2.Render(renderer);
+        if(isPlaying && !isGameOver)
+        {
+            bird.Render(renderer);
+            score.Render(renderer);
+        }
+    }else
+    {
+        gameOverBg.Render(renderer);
+        replayButton->Render(renderer);
     }
-    playButton->Render(renderer);
-    quitButton->Render(renderer);
     mouse->Render(renderer);
     SDL_RenderPresent(renderer);
 }

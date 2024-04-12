@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
         FrameStart = SDL_GetTicks();
         g->Render();
         g->Event();
-
+        g->Update();
         FrameTime = SDL_GetTicks() - FrameStart;
         if (FrameDelay > FrameTime) {
             SDL_Delay(FrameDelay - FrameTime);
