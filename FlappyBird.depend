@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1712939270 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
+1712994798 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
 	"GameLoop.h"
 
-1712939442 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
+1712994047 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
 	<bits/stdc++.h>
 	"Object.h"
 	<SDL.h>
@@ -43,7 +43,7 @@
 1712721157 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
 	"Object.h"
 
-1712901616 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
+1712977410 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
 	"Pipe.h"
 	<ctime>
 	<vector>

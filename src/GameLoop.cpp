@@ -9,6 +9,9 @@ GameLoop::GameLoop()
     highestScore.setSrc(0, 0, NULL, NULL);
     score.setDest(184, 100, textWidth, textHeight);
     highestScore.setDest(216, 150, textWidth, textHeight);
+    clickSound = NULL;
+    wingSound = NULL;
+    dieSound = NULL;
     upPipe.resize(3);
     downPipe.resize(3);
 }
@@ -57,9 +60,12 @@ void GameLoop::Initialize()
             playButton->CreateTexture("assets/image/button.png",renderer);
             quitButton->CreateTexture("assets/image/button.png",renderer);
             replayButton->CreateTexture("assets/image/button.png", renderer);
+            exitButton->CreateTexture("assets/image/button.png", renderer);
             playButton->setCordinate(123,320);
             quitButton->setCordinate(123,420);
-            replayButton->setCordinate(123,550);
+            replayButton->setCordinate(25,550);
+            exitButton->setCordinate(220,550);
+
         }else {
             std::cout << "Not created!" <<std::endl;
         }
@@ -69,9 +75,11 @@ void GameLoop::Initialize()
     std::ifstream file("assets/highscore.txt");
     file >> highScore;
     file.close();
+
+    //TTF
     if(TTF_Init() < 0)
     {
-        std::cout << "Text faile to initialize! Error: " << TTF_GetError() << std::endl;
+        std::cout << "Text failed to initialize! Error: " << TTF_GetError() << std::endl;
         Clear();
     }
     else
@@ -79,6 +87,25 @@ void GameLoop::Initialize()
         scoreFont = TTF_OpenFont("assets/font/flappy-bird-font/flappy-bird-font.ttf", fontsize);
         score.WriteText(to_string(SCORE), scoreFont, white, renderer);
         highestScore.WriteText(to_string(highScore), scoreFont, white, renderer);
+    }
+
+    //MIXER
+    if(SDL_Init(SDL_INIT_AUDIO < 0))
+    {
+        std::cout << "Audio failed to initialize! Error: " << SDL_GetError() << std::endl;
+    }
+    else
+    {
+        if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+        {
+            std::cout << "SDL_mixer failed to initialize! Error: " << Mix_GetError() << std::endl;
+        }
+        else
+        {
+            clickSound = Mix_LoadMUS("assets/sound/mouse_click.wav");
+            wingSound = Mix_LoadMUS("assets/sound/sfx_wing.wav");
+            dieSound = Mix_LoadMUS("assets/sound/sfx_die.wav");
+        }
     }
 }
 
@@ -114,10 +141,12 @@ void GameLoop::Event() {
                     if(!bird.JumpState() && isPlaying)
                     {
                         bird.Jump();
+                        Mix_PlayMusic(wingSound, 1);
                     }
-                    if(!isPlaying)
+                    if(!isPlaying || isGameOver)
                     {
                         isPlaying = true;
+                        isGameOver = false;
                     }
                 }
             }
@@ -135,6 +164,11 @@ void GameLoop::Event() {
                         NewGame();
                         currentState = GAMEPLAY;
                     }
+                    if(exitButton->isSellected)
+                    {
+                        NewGame();
+                        currentState = MENU;
+                    }
                 }
             }
             break;
@@ -144,6 +178,13 @@ void GameLoop::Event() {
     if(event.type == SDL_QUIT)
     {
         GameState = false;
+    }
+    if(event.type == SDL_MOUSEBUTTONDOWN)
+    {
+        if(event.button.button == SDL_BUTTON_LEFT)
+        {
+            Mix_PlayMusic(clickSound, 1);
+        }
     }
 }
 
@@ -156,38 +197,31 @@ bool GameLoop::CheckCollision(const SDL_Rect& a, const SDL_Rect& b)
 
 void GameLoop::CollisionDetection()
 {
-    //Upper Pipe
-    if(CheckCollision((&bird)->getDest(), (&upPipe[0])->getDest()) ||
-       CheckCollision((&bird)->getDest(), (&upPipe[0])->getDest()) ||
-       CheckCollision((&bird)->getDest(), (&upPipe[0])->getDest()) )
-    {
-        isPlaying = false;
-        isGameOver = true;
-        currentState = GAMEOVER;
-        ScoreUpdate();
+    // Check collision with upper and lower pipes
+    for (int i = 0; i < 3; ++i) {
+        if (CheckCollision(bird.getDest(), upPipe[i].getDest()) ||
+            CheckCollision(bird.getDest(), downPipe[i].getDest())) {
+            HandleCollision();
+            break; // Break loop if collision detected to avoid unnecessary checks
+        }
     }
 
-    //DownPipe
-    if(CheckCollision((&bird)->getDest(), (&downPipe[0])->getDest()) ||
-       CheckCollision((&bird)->getDest(), (&downPipe[0])->getDest()) ||
-       CheckCollision((&bird)->getDest(), (&downPipe[0])->getDest()) )
-    {
-        isPlaying = false;
-        isGameOver = true;
-        currentState = GAMEOVER;
-        ScoreUpdate();
-    }
-
-    //Floor
-    if(CheckCollision((&bird)->getDest(), (&floor1)->getDest()) ||
-       CheckCollision((&bird)->getDest(), (&floor2)->getDest()))
-    {
-        isPlaying = false;
-        isGameOver = true;
-        currentState = GAMEOVER;
-        ScoreUpdate();
+    // Check collision with floor
+    if (CheckCollision(bird.getDest(), floor1.getDest()) ||
+        CheckCollision(bird.getDest(), floor2.getDest())) {
+        HandleCollision();
     }
 }
+
+void GameLoop::HandleCollision()
+{
+    isPlaying = false;
+    isGameOver = true;
+    currentState = GAMEOVER;
+    Mix_PlayMusic(dieSound, 1);
+    ScoreUpdate();
+}
+
 
 
 void GameLoop::ScoreUpdate()
@@ -266,6 +300,7 @@ void GameLoop::Update() {
     if(currentState == GAMEOVER)
     {
         replayButton->CheckSelected(mouse);
+        exitButton->CheckSelected(mouse);
     }
     SDL_GetMouseState(&(mouse->cursor.x), &(mouse->cursor.y));
 }
@@ -294,15 +329,13 @@ void GameLoop::Render() {
         }
         floor1.Render(renderer);
         floor2.Render(renderer);
-        if(isPlaying && !isGameOver)
-        {
-            bird.Render(renderer);
-            score.Render(renderer);
-        }
+        bird.Render(renderer);
+        score.Render(renderer);
     }else
     {
         gameOverBg.Render(renderer);
         replayButton->Render(renderer);
+        exitButton->Render(renderer);
     }
     mouse->Render(renderer);
     SDL_RenderPresent(renderer);
@@ -312,13 +345,11 @@ void GameLoop::Render() {
 void GameLoop::NewGame()
 {
     isGameOver = false;
-    isPlaying = true;
+    isPlaying = false;
     bird.Reset();
-    upPipe.clear();
-    downPipe.clear();
     for(int i=0; i<3; i++) {
-        upPipe[i].setSrc(0, 0, 41, 253);
-        downPipe[i].setSrc(0, 0, 41, 253);
+        upPipe[i].setSrc(0, 0, 84, 501);
+        downPipe[i].setSrc(0, 0, 84, 501);
         upPipe[i].setPipe(i);
         downPipe[i].setPipe(i);
     }
@@ -335,5 +366,6 @@ void GameLoop::Clear() {
     SDL_DestroyWindow(window);
     IMG_Quit();
     TTF_Quit();
+    Mix_Quit();
     SDL_Quit();
 }

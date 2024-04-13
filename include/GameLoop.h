@@ -35,15 +35,19 @@ private:
     vector<Pipe> upPipe;
     vector<Pipe> downPipe;
     Mouse* mouse = new Mouse;
+
     bool isPlaying = false;
     bool isGameOver = false;
+    bool gameStarted = false;
+
     //GAMEOVER
     Background gameOverBg;
     Button* replayButton = new Button(0, 736);
+    Button* exitButton = new Button(0, 368);
     //Menu
     Background menuBg;
     Button* playButton = new Button(0,0);
-    Button* quitButton = new Button(0,368);
+    Button* quitButton = new Button(0,920);
     //GameState
     enum GameEvent {MENU, GAMEPLAY, GAMEOVER};
     GameEvent currentState;
@@ -58,6 +62,11 @@ private:
     int fontsize = 32;
     SDL_Color white = { 250, 250, 250 };
 
+    //SOUND
+    Mix_Music* clickSound;
+    Mix_Music* wingSound;
+    Mix_Music* dieSound;
+
 public:
     GameLoop();
     bool getGameState();
@@ -68,6 +77,7 @@ public:
     bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
     void CollisionDetection();
     void ScoreUpdate();
+    void HandleCollision();
     void NewGame();
     void Clear();
 };
