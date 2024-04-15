@@ -9,6 +9,9 @@ GameLoop::GameLoop()
     highestScore.setSrc(0, 0, NULL, NULL);
     score.setDest(184, 100, textWidth, textHeight);
     highestScore.setDest(216, 150, textWidth, textHeight);
+    bool MenuState = false;
+    bool GamePlayState = false;
+    bool GameOverState = false;
     clickSound = NULL;
     wingSound = NULL;
     dieSound = NULL;
@@ -30,6 +33,7 @@ void GameLoop::Initialize()
             SDL_ShowCursor(SDL_DISABLE);
             std::cout << "Succeeded!" << std::endl;
             GameState = true;
+            MenuState = true;
 
             //Background
             background.CreateTexture("assets/image/background.png", renderer);
@@ -112,81 +116,65 @@ void GameLoop::Initialize()
 void GameLoop::Event() {
     SDL_Event event;
     SDL_PollEvent(&event);
-    switch (currentState)
-    {
-        case MENU:
-        {
-            if(event.type == SDL_MOUSEBUTTONUP)
-            {
-                if(event.button.button == SDL_BUTTON_LEFT)
-                {
-                    if(playButton->isSellected)
-                    {
-                        currentState = GAMEPLAY;
-                    }
-                    if(quitButton->isSellected)
-                    {
-                        GameState = false;
-                    }
-                }
-            }
-            break;
-        }
-        case GAMEPLAY:
-        {
-            if(event.type == SDL_KEYDOWN)
-            {
-                if(event.key.keysym.sym == SDLK_SPACE)
-                {
-                    if(!bird.JumpState() && isPlaying)
-                    {
-                        bird.Jump();
-                        Mix_PlayMusic(wingSound, 1);
-                    }
-                    if(!isPlaying || isGameOver)
-                    {
-                        isPlaying = true;
-                        isGameOver = false;
-                    }
-                }
-            }
 
-            break;
-        }
-        case GAMEOVER:
-        {
-            if(event.type == SDL_MOUSEBUTTONUP)
-            {
-                if(event.button.button == SDL_BUTTON_LEFT)
-                {
-                    if(replayButton->isSellected)
-                    {
-                        NewGame();
-                        currentState = GAMEPLAY;
-                    }
-                    if(exitButton->isSellected)
-                    {
-                        NewGame();
-                        currentState = MENU;
-                    }
+    if (MenuState) {
+        if (event.type == SDL_MOUSEBUTTONUP) {
+            if (event.button.button == SDL_BUTTON_LEFT) {
+                if (playButton->isSellected) {
+                    GamePlayState = true;
+                    MenuState = false;
+                    GameOverState = false;
+                }
+                if (quitButton->isSellected) {
+                    GameState = false;
                 }
             }
-            break;
         }
-
     }
-    if(event.type == SDL_QUIT)
-    {
+    if (GamePlayState) {
+        if (event.type == SDL_KEYDOWN) {
+            if (event.key.keysym.sym == SDLK_SPACE) {
+                if (!bird.JumpState() && isPlaying) {
+                    bird.Jump();
+                    Mix_PlayMusic(wingSound, 1);
+                }
+                if (!isPlaying || isGameOver) {
+                    isPlaying = true;
+                    isGameOver = false;
+                }
+            }
+        }
+    }
+    if (GameOverState) {
+        if (event.type == SDL_MOUSEBUTTONUP) {
+            if (event.button.button == SDL_BUTTON_LEFT) {
+                if (replayButton->isSellected) {
+                    MenuState = false;
+                    GamePlayState = true;
+                    NewGame();
+                    GameOverState = false;
+                }
+                if (exitButton->isSellected) {
+                    MenuState = true;
+                    GameOverState = false;
+                    GamePlayState = false;
+                    NewGame();
+                }
+            }
+        }
+    }
+
+    if (event.type == SDL_QUIT) {
         GameState = false;
     }
-    if(event.type == SDL_MOUSEBUTTONDOWN)
-    {
-        if(event.button.button == SDL_BUTTON_LEFT)
-        {
+    if (event.type == SDL_MOUSEBUTTONDOWN) {
+        if (event.button.button == SDL_BUTTON_LEFT) {
             Mix_PlayMusic(clickSound, 1);
+            std::cout << boolalpha << MenuState << " " << GamePlayState << " " << GameOverState << std::endl;
         }
     }
 }
+
 
 bool GameLoop::CheckCollision(const SDL_Rect& a, const SDL_Rect& b)
 {
@@ -197,30 +185,36 @@ bool GameLoop::CheckCollision(const SDL_Rect& a, const SDL_Rect& b)
 
 void GameLoop::CollisionDetection()
 {
-    // Check collision with upper and lower pipes
-    for (int i = 0; i < 3; ++i) {
-        if (CheckCollision(bird.getDest(), upPipe[i].getDest()) ||
-            CheckCollision(bird.getDest(), downPipe[i].getDest())) {
-            HandleCollision();
-            break; // Break loop if collision detected to avoid unnecessary checks
+    // Check collision with upper and lower pipes if in GamePlayState
+    if (GamePlayState) {
+        for (int i = 0; i < 3; ++i) {
+            if (CheckCollision(bird.getDest(), upPipe[i].getDest()) ||
+                CheckCollision(bird.getDest(), downPipe[i].getDest())) {
+                HandleCollision();
+                break;
+            }
         }
-    }
 
-    // Check collision with floor
-    if (CheckCollision(bird.getDest(), floor1.getDest()) ||
-        CheckCollision(bird.getDest(), floor2.getDest())) {
-        HandleCollision();
+        // Check collision with floor
+        if (CheckCollision(bird.getDest(), floor1.getDest()) ||
+            CheckCollision(bird.getDest(), floor2.getDest())) {
+            HandleCollision();
+        }
     }
 }
 
 void GameLoop::HandleCollision()
 {
-    isPlaying = false;
-    isGameOver = true;
-    currentState = GAMEOVER;
-    Mix_PlayMusic(dieSound, 1);
-    ScoreUpdate();
+    if (GamePlayState) {
+        isPlaying = false;
+        isGameOver = true;
+        GamePlayState = false;
+        GameOverState = true;
+        Mix_PlayMusic(dieSound, 1);
+        ScoreUpdate();
+    }
 }
+
 
 
 
@@ -270,7 +264,7 @@ void GameLoop::ScoreUpdate()
 
 
 void GameLoop::Update() {
-    if(currentState == GAMEPLAY)
+    if(GamePlayState)
     {
         if(isPlaying) {
             //Bird
@@ -292,12 +286,12 @@ void GameLoop::Update() {
         score.WriteText(to_string(SCORE), scoreFont, white, renderer);
         CollisionDetection();
     }
-    if(currentState == MENU)
+    if(MenuState)
     {
         playButton->CheckSelected(mouse);
         quitButton->CheckSelected(mouse);
     }
-    if(currentState == GAMEOVER)
+    if(GameOverState)
     {
         replayButton->CheckSelected(mouse);
         exitButton->CheckSelected(mouse);
@@ -308,13 +302,13 @@ void GameLoop::Update() {
 void GameLoop::Render() {
     SDL_RenderClear(renderer);
 
-    if(currentState == MENU)
+    if(MenuState)
     {
         menuBg.Render(renderer);
         playButton->Render(renderer);
         quitButton->Render(renderer);
     }
-    else if(currentState == GAMEPLAY)
+    if(GamePlayState)
     {
         background.Render(renderer);
 
@@ -331,7 +325,8 @@ void GameLoop::Render() {
         floor2.Render(renderer);
         bird.Render(renderer);
         score.Render(renderer);
-    }else
+    }
+    if(GameOverState)
     {
         gameOverBg.Render(renderer);
         replayButton->Render(renderer);
@@ -342,24 +337,26 @@ void GameLoop::Render() {
 }
 
 
-void GameLoop::NewGame()
-{
+void GameLoop::NewGame() {
     isGameOver = false;
     isPlaying = false;
     bird.Reset();
-    for(int i=0; i<3; i++) {
-        upPipe[i].setSrc(0, 0, 84, 501);
-        downPipe[i].setSrc(0, 0, 84, 501);
-        upPipe[i].setPipe(i);
-        downPipe[i].setPipe(i);
-    }
-    std::ifstream read("assets/highscore.txt");
-    read >> highScore;
-    highestScore.WriteText(to_string(highScore), scoreFont, white, renderer);
-    read.close();
 
-    Render();
+    // Reset pipes
+    for (int i = 0; i < 3; ++i) {
+    upPipe[i].setSrc(0, 0, 84, 501);
+    downPipe[i].setSrc(0, 0, 84, 501);
+    upPipe[i].setPipe(i);
+    downPipe[i].setPipe(i);
+  }
+
+  // Read high score from file
+  std::ifstream read("assets/highscore.txt");
+  read >> highScore;
+  highestScore.WriteText(std::to_string(highScore), scoreFont, white, renderer);
+  read.close();
 }
+
 
 void GameLoop::Clear() {
     SDL_DestroyRenderer(renderer);

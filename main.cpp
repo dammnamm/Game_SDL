@@ -6,7 +6,7 @@ GameLoop* g = new GameLoop();
 
 int main(int argc, char* argv[])
 {
-    const int FPS = 240;
+    const int FPS = 250;
     const int FrameDelay = 1000/FPS;
     Uint32 FrameStart;
     int FrameTime;

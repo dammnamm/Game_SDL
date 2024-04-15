@@ -49,8 +49,9 @@ private:
     Button* playButton = new Button(0,0);
     Button* quitButton = new Button(0,920);
     //GameState
-    enum GameEvent {MENU, GAMEPLAY, GAMEOVER};
-    GameEvent currentState;
+    bool MenuState ;
+    bool GamePlayState;
+    bool GameOverState;
     //Score
     int textWidth = 64;
     int textHeight = 100;
