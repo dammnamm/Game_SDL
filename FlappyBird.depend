@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1713106371 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
+1713171894 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
 	"GameLoop.h"
 
 1713103566 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
@@ -20,7 +20,7 @@
 	"Button.h"
 	"TextObject.h"
 
-1712929533 source:d:\learning\vnu-uet\2023-2024\project\flappybird\main.cpp
+1713107581 source:d:\learning\vnu-uet\2023-2024\project\flappybird\main.cpp
 	"GameLoop.h"
 
 1712720090 d:\learning\vnu-uet\2023-2024\project\flappybird\include\texturemanager.h

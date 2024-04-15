@@ -151,8 +151,8 @@ void GameLoop::Event() {
                 if (replayButton->isSellected) {
                     MenuState = false;
                     GamePlayState = true;
-                    NewGame();
                     GameOverState = false;
+                    NewGame();
                 }
                 if (exitButton->isSellected) {
                     MenuState = true;
@@ -170,7 +170,6 @@ void GameLoop::Event() {
     if (event.type == SDL_MOUSEBUTTONDOWN) {
         if (event.button.button == SDL_BUTTON_LEFT) {
             Mix_PlayMusic(clickSound, 1);
-            std::cout << boolalpha << MenuState << " " << GamePlayState << " " << GameOverState << std::endl;
         }
     }
 }
@@ -277,14 +276,15 @@ void GameLoop::Update() {
             downPipe[1].downPipeUpdate(1);
             downPipe[2].downPipeUpdate(2);
             ScoreUpdate();
+
+            //Floor
+            floor1.Update1();
+            floor2.Update2();
+            //Test
+            score.WriteText(to_string(SCORE), scoreFont, white, renderer);
+            CollisionDetection();
         }
 
-        //Floor
-        floor1.Update1();
-        floor2.Update2();
-        //Test
-        score.WriteText(to_string(SCORE), scoreFont, white, renderer);
-        CollisionDetection();
     }
     if(MenuState)
     {
@@ -311,7 +311,6 @@ void GameLoop::Render() {
     if(GamePlayState)
     {
         background.Render(renderer);
-
         if(!isGameOver)
         {
             upPipe[0].Render(renderer);
@@ -344,17 +343,18 @@ void GameLoop::NewGame() {
 
     // Reset pipes
     for (int i = 0; i < 3; ++i) {
-    upPipe[i].setSrc(0, 0, 84, 501);
-    downPipe[i].setSrc(0, 0, 84, 501);
-    upPipe[i].setPipe(i);
-    downPipe[i].setPipe(i);
-  }
+        upPipe[i].setSrc(0, 0, 84, 501);
+        downPipe[i].setSrc(0, 0, 84, 501);
+        upPipe[i].setPipe(i);
+        downPipe[i].setPipe(i);
+    }
 
-  // Read high score from file
-  std::ifstream read("assets/highscore.txt");
-  read >> highScore;
-  highestScore.WriteText(std::to_string(highScore), scoreFont, white, renderer);
-  read.close();
+    // Read high score from file
+    std::ifstream read("assets/highscore.txt");
+    read >> highScore;
+    highestScore.WriteText(std::to_string(highScore), scoreFont, white, renderer);
+    read.close();
+    Render();
 }
 
 
