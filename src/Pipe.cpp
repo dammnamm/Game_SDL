@@ -7,7 +7,7 @@ Pipe::Pipe()
 {
     pipeWidth = 84;
     pipeHeight = 501;
-    space = 185;
+    space = 187;
 }
 
 void Pipe::setPipe(int i)

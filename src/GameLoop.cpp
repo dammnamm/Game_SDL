@@ -349,6 +349,7 @@ void GameLoop::Render() {
         gameOverBg.Render(renderer);
         replayButton->Render(renderer);
         exitButton->Render(renderer);
+        score.Render(renderer);
     }
     mouse->Render(renderer);
     SDL_RenderPresent(renderer);
