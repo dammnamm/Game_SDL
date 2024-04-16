@@ -64,9 +64,14 @@ private:
     SDL_Color white = { 250, 250, 250 };
 
     //SOUND
-    Mix_Music* clickSound;
-    Mix_Music* wingSound;
+    Mix_Chunk* scoreSound;
+    Mix_Chunk* clickSound;
+    Mix_Chunk* wingSound;
     Mix_Music* dieSound;
+    Mix_Music* bgSound;
+    Mix_Music* inGameSound;
+    bool isBgSoundPlaying = false;
+    bool isIngameSoundPlaying = false;
 
 public:
     GameLoop();

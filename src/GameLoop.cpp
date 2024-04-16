@@ -5,6 +5,7 @@ GameLoop::GameLoop()
     window = NULL;
     renderer = NULL;
     GameState = false;
+    floor1.setDest(0, 650, 672, 224);
     score.setSrc(0, 0, NULL, NULL);
     highestScore.setSrc(0, 0, NULL, NULL);
     score.setDest(184, 100, textWidth, textHeight);
@@ -15,6 +16,9 @@ GameLoop::GameLoop()
     clickSound = NULL;
     wingSound = NULL;
     dieSound = NULL;
+    bgSound = NULL;
+    scoreSound = NULL;
+    inGameSound = NULL;
     upPipe.resize(3);
     downPipe.resize(3);
 }
@@ -106,9 +110,12 @@ void GameLoop::Initialize()
         }
         else
         {
-            clickSound = Mix_LoadMUS("assets/sound/mouse_click.wav");
-            wingSound = Mix_LoadMUS("assets/sound/sfx_wing.wav");
+            clickSound = Mix_LoadWAV("assets/sound/mouse_click.wav");
+            wingSound = Mix_LoadWAV("assets/sound/sfx_wing.wav");
             dieSound = Mix_LoadMUS("assets/sound/sfx_die.wav");
+            bgSound = Mix_LoadMUS("assets/sound/8_bit_rainy_city_lofi.mp3");
+            inGameSound = Mix_LoadMUS("assets/sound/ingame.mp3");
+            scoreSound = Mix_LoadWAV("assets/sound/scoresound.wav");
         }
     }
 }
@@ -118,6 +125,10 @@ void GameLoop::Event() {
     SDL_PollEvent(&event);
 
     if (MenuState) {
+        if (!isBgSoundPlaying) {
+            Mix_PlayMusic(bgSound,-1);
+            isBgSoundPlaying = true;
+        }
         if (event.type == SDL_MOUSEBUTTONUP) {
             if (event.button.button == SDL_BUTTON_LEFT) {
                 if (playButton->isSellected) {
@@ -132,11 +143,16 @@ void GameLoop::Event() {
         }
     }
     if (GamePlayState) {
+        if (!isIngameSoundPlaying)
+        {
+            Mix_PlayMusic(inGameSound,-1);
+            isIngameSoundPlaying = true;
+        }
         if (event.type == SDL_KEYDOWN) {
             if (event.key.keysym.sym == SDLK_SPACE) {
                 if (!bird.JumpState() && isPlaying) {
                     bird.Jump();
-                    Mix_PlayMusic(wingSound, 1);
+                    Mix_PlayChannel(-1, wingSound, 0);;
                 }
                 if (!isPlaying || isGameOver) {
                     isPlaying = true;
@@ -148,7 +164,9 @@ void GameLoop::Event() {
     if (GameOverState) {
         if (event.type == SDL_MOUSEBUTTONUP) {
             if (event.button.button == SDL_BUTTON_LEFT) {
-                if (replayButton->isSellected) {
+                if (replayButton->isSellected)
+                {
+                    isIngameSoundPlaying = false;
                     MenuState = false;
                     GamePlayState = true;
                     GameOverState = false;
@@ -158,6 +176,7 @@ void GameLoop::Event() {
                     MenuState = true;
                     GameOverState = false;
                     GamePlayState = false;
+                    isBgSoundPlaying = false;
                     NewGame();
                 }
             }
@@ -169,7 +188,7 @@ void GameLoop::Event() {
     }
     if (event.type == SDL_MOUSEBUTTONDOWN) {
         if (event.button.button == SDL_BUTTON_LEFT) {
-            Mix_PlayMusic(clickSound, 1);
+            Mix_PlayChannel(-1, clickSound, 0);
         }
     }
 }
@@ -222,14 +241,14 @@ void GameLoop::ScoreUpdate()
     if(isPlaying)
     {
         const int birdLeft = bird.getDest().x;
-        //const int birdRight = bird.getDest().x + bird.getDest().w;
         for(int i=0; i<3; i++) {
-            if(birdLeft + bird.getDest().w == upPipe[i].getDest().x )
+            if(birdLeft== upPipe[i].getDest().x )
             {
                 if(!CheckCollision((&bird)->getDest(), (&upPipe[i])->getDest()) &&
                     !CheckCollision((&bird)->getDest(), (&downPipe[i])->getDest()))
                 {
                     SCORE += 1;
+                    Mix_PlayChannel(-1, scoreSound, 0);
                     // Adjust score text size based on the number of digits in the score
                     int scoreDigits = std::to_string(SCORE).length();
                     int textSizeMultiplier = scoreDigits > 1 ? 2 : 1; // Increase text size for two or more digits
@@ -340,7 +359,10 @@ void GameLoop::NewGame() {
     isGameOver = false;
     isPlaying = false;
     bird.Reset();
-
+    floor1.setDest(0, 650, 672, 224);
+    floor2.setDest(672, 650, 672, 224);
+    upPipe.clear();
+    downPipe.clear();
     // Reset pipes
     for (int i = 0; i < 3; ++i) {
         upPipe[i].setSrc(0, 0, 84, 501);
@@ -354,7 +376,6 @@ void GameLoop::NewGame() {
     read >> highScore;
     highestScore.WriteText(std::to_string(highScore), scoreFont, white, renderer);
     read.close();
-    Render();
 }
 
 

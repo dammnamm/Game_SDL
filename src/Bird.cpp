@@ -107,6 +107,7 @@ void Bird::Reset()
     setDest(100,Ypos, birdWidth, birdHeight);
 }
 
+
 void Bird::Render(SDL_Renderer* renderer)
 {
     animationTimer++;
