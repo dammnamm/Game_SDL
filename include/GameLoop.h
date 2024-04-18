@@ -39,7 +39,7 @@ private:
     bool isPlaying = false;
     bool isGameOver = false;
     bool gameStarted = false;
-
+    Background message;
     //GAMEOVER
     Background gameOverBg;
     Button* replayButton = new Button(0, 736);
@@ -57,9 +57,9 @@ private:
     int textHeight = 100;
     int highScore;
     TextObject highestScore;
+    TextObject score;
     int SCORE = 0;
     TTF_Font* scoreFont;
-    TextObject score;
     int fontsize = 32;
     SDL_Color white = { 250, 250, 250 };
 

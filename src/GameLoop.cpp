@@ -8,8 +8,10 @@ GameLoop::GameLoop()
     floor1.setDest(0, 650, 672, 224);
     score.setSrc(0, 0, NULL, NULL);
     highestScore.setSrc(0, 0, NULL, NULL);
-    score.setDest(184, 100, textWidth, textHeight);
-    highestScore.setDest(216, 150, textWidth, textHeight);
+    score.setDest(184, 200, textWidth, textHeight);
+    highestScore.setDest(184, 500, textWidth, textHeight);
+    message.setSrc(0, 0, 146, 210);
+    message.setDest(5, -40, 146*3 - 10, 210*3 - 10);
     bool MenuState = false;
     bool GamePlayState = false;
     bool GameOverState = false;
@@ -41,6 +43,7 @@ void GameLoop::Initialize()
 
             //Background
             background.CreateTexture("assets/image/background.png", renderer);
+            message.CreateTexture("assets/image/message.png", renderer);
             menuBg.CreateTexture("assets/image/menubackground.png", renderer);
             gameOverBg.CreateTexture("assets/image/gameoverbackground.png", renderer);
 
@@ -189,6 +192,7 @@ void GameLoop::Event() {
     if (event.type == SDL_MOUSEBUTTONDOWN) {
         if (event.button.button == SDL_BUTTON_LEFT) {
             Mix_PlayChannel(-1, clickSound, 0);
+            std::cout << mouse->cursor.x << " " << mouse->cursor.y << std::endl;
         }
     }
 }
@@ -238,7 +242,7 @@ void GameLoop::HandleCollision()
 
 void GameLoop::ScoreUpdate()
 {
-    if(isPlaying)
+    if(GamePlayState)
     {
         const int birdLeft = bird.getDest().x;
         for(int i=0; i<3; i++) {
@@ -255,10 +259,16 @@ void GameLoop::ScoreUpdate()
                     int scoreTextWidth = textWidth * textSizeMultiplier;
                     // Calculate x-coordinate to center the score text
                     int xCenter = (WIDTH - scoreTextWidth) / 2;
-                    score.setDest(xCenter, 100, scoreTextWidth, textHeight);
+                    score.setDest(xCenter, 200, scoreTextWidth, textHeight);
                 }
             }
         }
+    }
+    if(GameOverState)
+    {
+        //SCORE
+        score.setDest((375 - 250 - 32*int(to_string(SCORE).length())) / 2 + 250, 277, int(to_string(SCORE).length())*32, 50);
+        highestScore.setDest((375 - 250 - 32*int(to_string(highScore).length())) / 2 + 250, 370, int(to_string(highScore).length())*32 - 5, 50);
     }
     if(isGameOver)
     {
@@ -269,16 +279,8 @@ void GameLoop::ScoreUpdate()
         std::ofstream write("assets/highscore.txt");
         write << highScore;
         write.close();
-
-        // Reset score text size and position to default
-        int xCenter = (WIDTH - textWidth) / 2;
-        score.setDest(xCenter, 100, textWidth, textHeight);
-
-        score.WriteText(to_string(SCORE), scoreFont, white, renderer);
     }
 }
-
-
 
 
 void GameLoop::Update() {
@@ -339,10 +341,14 @@ void GameLoop::Render() {
             downPipe[1].Render(renderer);
             downPipe[2].Render(renderer);
         }
+        score.Render(renderer);
+        if(!isPlaying)
+        {
+            message.Render(renderer);
+        }
         floor1.Render(renderer);
         floor2.Render(renderer);
         bird.Render(renderer);
-        score.Render(renderer);
     }
     if(GameOverState)
     {
@@ -350,6 +356,7 @@ void GameLoop::Render() {
         replayButton->Render(renderer);
         exitButton->Render(renderer);
         score.Render(renderer);
+        highestScore.Render(renderer);
     }
     mouse->Render(renderer);
     SDL_RenderPresent(renderer);
@@ -372,6 +379,10 @@ void GameLoop::NewGame() {
         downPipe[i].setPipe(i);
     }
 
+    int xCenter = (WIDTH - textWidth) / 2;
+    score.setDest(xCenter, 200, textWidth, textHeight);
+
+    score.WriteText(to_string(SCORE), scoreFont, white, renderer);
     // Read high score from file
     std::ifstream read("assets/highscore.txt");
     read >> highScore;

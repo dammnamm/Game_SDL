@@ -13,7 +13,7 @@ Bird::Bird()
     jumpTimer;
     lastJump = 0;
     setSrc(0,0, birdWidth, birdHeight);
-    setDest(100,Ypos, birdWidth, birdHeight);
+    setDest(50,Ypos, birdWidth, birdHeight);
 }
 
 void Bird::Gravity(bool isPlaying)
@@ -23,9 +23,7 @@ void Bird::Gravity(bool isPlaying)
         speed = jumpHeight; //reset speed;
         inJump = false;
     }
-    if(true) {
-        Ypos += speed/4;
-    }
+    Ypos += speed/4;
     speed += gravity/2;
     setDest(100, Ypos, birdWidth, birdHeight);
 
@@ -56,7 +54,7 @@ double Bird::GetTimeJump(double jumpTimer)
 void Bird::Jump()
 {
     jumpTimer = GetTimeJump(jumpTimer);
-    if(jumpTimer - lastJump > 165)
+    if(jumpTimer - lastJump > 200)
     {
         inJump = true;
         lastJump = jumpTimer;
@@ -104,7 +102,7 @@ void Bird::Reset()
     jumpTimer;
     lastJump = 0;
     setSrc(0,0, birdWidth, birdHeight);
-    setDest(100,Ypos, birdWidth, birdHeight);
+    setDest(50,Ypos, birdWidth, birdHeight);
 }
 
 
