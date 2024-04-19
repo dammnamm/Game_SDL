@@ -15,7 +15,7 @@ class Pipe : public Object
         void setPipe(int i);
         int pipeWidth;
         int pipeHeight;
-        int space = 190;
+        int space = 300;
         int downPipeHeight[3];
         int generateRandomHeight();
         void updateUpPipe(int i);

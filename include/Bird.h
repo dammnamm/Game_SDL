@@ -6,25 +6,19 @@
 class Bird:public Object
 {
 private:
-    SDL_Texture* Tex1;
-    SDL_Texture* Tex2;
-    int birdWidth;
-    int birdHeight;
-    int animationTimer;
-    double angle;
-
-    double speed;
-    double gravity;
-    int Ypos;
-    bool inJump;
+    int angle = 0;
+    int birdWidth = 96;
+    int birdHeight = 78;
+    double Ypos;
     double jumpHeight;
-    double jumpTimer;
-    double lastJump;
+    SDL_Texture* bird1;
+    double gravity;
+    double ver_speed;
+    int animationTimer = 0;
+
 public:
     Bird();
     void Gravity(bool isPlaying);
-    double GetTimeJump(double jumpTimer);
-    bool JumpState();
     void Jump();
     void CreateTexture1(const char* filePath, SDL_Renderer* renderer);
     void CreateTexture2(const char* filePath, SDL_Renderer* renderer);

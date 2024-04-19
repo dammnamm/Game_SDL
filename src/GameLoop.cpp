@@ -57,7 +57,6 @@ void GameLoop::Initialize()
             // Load textures for bird and its different states
             bird.CreateTexture("assets/image/player1.png", renderer);
             bird.CreateTexture1("assets/image/player2.png", renderer);
-            bird.CreateTexture2("assets/image/player3.png", renderer);
 
             // Load textures for floor
             floor1.CreateTexture("assets/image/land.png", renderer);
@@ -166,7 +165,7 @@ void GameLoop::Event() {
         }
         if (event.type == SDL_KEYDOWN) {
             if (event.key.keysym.sym == SDLK_SPACE) {
-                if (!bird.JumpState() && isPlaying) {
+                if (isPlaying) {
                     bird.Jump();
                     Mix_PlayChannel(-1, wingSound, 0);
                 }
@@ -266,11 +265,9 @@ void GameLoop::ScoreUpdate()
                 {
                     SCORE += 1;
                     Mix_PlayChannel(-1, scoreSound, 0);
-                    // Adjust score text size based on the number of digits in the score
                     int scoreDigits = std::to_string(SCORE).length();
-                    int textSizeMultiplier = scoreDigits > 1 ? 2 : 1; // Increase text size for two or more digits
+                    int textSizeMultiplier = scoreDigits;
                     int scoreTextWidth = textWidth * textSizeMultiplier;
-                    // Calculate x-coordinate to center the score text
                     int xCenter = (WIDTH - scoreTextWidth) / 2;
                     score.setDest(xCenter, 200, scoreTextWidth, textHeight);
                 }

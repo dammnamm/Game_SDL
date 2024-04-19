@@ -16,7 +16,7 @@ void Pipe::setPipe(int i)
 
 int Pipe::generateRandomHeight()
 {
-	std::vector<int> height = {150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350};
+	std::vector<int> height = {150,160,170,180,190,200,210,220,230,240,250,260,};
 	std::srand(std::time(0));
 	int random_index = std::rand() % height.size();
     return height[random_index];
@@ -31,7 +31,7 @@ void Pipe::updateUpPipe(int i)
     }
     else
     {
-        pipePosition[i] -= 1;
+        pipePosition[i] -= 2;
         setDest(pipePosition[i], upPipeHeight[i] - pipeHeight, pipeWidth, pipeHeight);
     }
 }
