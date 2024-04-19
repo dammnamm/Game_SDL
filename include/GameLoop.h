@@ -95,7 +95,7 @@ public:
     void Update();
     void Render();
     bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
-    void CollisionDetection();
+    void CollisionManager();
     void ScoreUpdate();
     void HandleCollision();
     void NewGame();

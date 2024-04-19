@@ -218,7 +218,7 @@ bool GameLoop::CheckCollision(const SDL_Rect& a, const SDL_Rect& b)
 
 
 
-void GameLoop::CollisionDetection()
+void GameLoop::CollisionManager()
 {
     // Check collision with upper and lower pipes if in GamePlayState
     if (GamePlayState) {
@@ -316,7 +316,7 @@ void GameLoop::Update() {
             floor2.Update2();
             //Test
             score.WriteText(to_string(SCORE), scoreFont, white, renderer);
-            CollisionDetection();
+            CollisionManager();
         }
 
     }
