@@ -5,22 +5,28 @@ GameLoop::GameLoop()
     window = NULL;
     renderer = NULL;
     GameState = false;
+    // Game objects initialization
     floor1.setDest(0, 650, 672, 224);
     score.setSrc(0, 0, NULL, NULL);
     highestScore.setSrc(0, 0, NULL, NULL);
     score.setDest(184, 200, textWidth, textHeight);
     highestScore.setDest(184, 500, textWidth, textHeight);
     message.setSrc(0, 0, 146, 210);
-    message.setDest(5, -40, 146*3 - 10, 210*3 - 10);
+    message.setDest(5, -40, 146 * 3 - 10, 210 * 3 - 10);
+    // Game state flags
     bool MenuState = false;
     bool GamePlayState = false;
     bool GameOverState = false;
+
+    // Sound initialization
     clickSound = NULL;
     wingSound = NULL;
     dieSound = NULL;
     bgSound = NULL;
     scoreSound = NULL;
     inGameSound = NULL;
+
+    // Resize vectors
     upPipe.resize(3);
     downPipe.resize(3);
 }
@@ -34,49 +40,56 @@ void GameLoop::Initialize()
     SDL_Init(SDL_INIT_EVERYTHING);
     window = SDL_CreateWindow("Flappy Bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE);
     if(window){
-        renderer = SDL_CreateRenderer(window, -1, 0);
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
         if(renderer) {
+            // Disable cursor and initialize game state variables
             SDL_ShowCursor(SDL_DISABLE);
             std::cout << "Succeeded!" << std::endl;
             GameState = true;
             MenuState = true;
 
-            //Background
+            // Load textures for background, message, menu, and game over backgrounds
             background.CreateTexture("assets/image/background.png", renderer);
             message.CreateTexture("assets/image/message.png", renderer);
             menuBg.CreateTexture("assets/image/menubackground.png", renderer);
             gameOverBg.CreateTexture("assets/image/gameoverbackground.png", renderer);
 
-            //Bird
+            // Load textures for bird and its different states
             bird.CreateTexture("assets/image/player1.png", renderer);
             bird.CreateTexture1("assets/image/player2.png", renderer);
             bird.CreateTexture2("assets/image/player3.png", renderer);
 
-            //Floor
+            // Load textures for floor
             floor1.CreateTexture("assets/image/land.png", renderer);
             floor2.CreateTexture("assets/image/land.png", renderer);
-            //Pipe
-            for(int i=0; i < 3; i++)
+
+            // Load textures for pipes
+            for (int i = 0; i < 3; i++)
             {
                 upPipe[i].CreateTexture("assets/image/pillarTop.png", renderer);
                 downPipe[i].CreateTexture("assets/image/pillarBottom.png", renderer);
             }
-            for(int i=0; i<3; i++) {
+
+            // Set positions and create textures for pipes
+            for (int i = 0; i < 3; i++) {
                 upPipe[i].setPipe(i);
                 downPipe[i].setPipe(i);
             }
-            //Mouse
+
+            // Load texture for mouse cursor
             mouse->CreateTexture("assets/image/mouse.png", renderer);
-            //Button
-            playButton->CreateTexture("assets/image/button.png",renderer);
-            quitButton->CreateTexture("assets/image/button.png",renderer);
+
+            // Load textures and set positions for buttons
+            playButton->CreateTexture("assets/image/button.png", renderer);
+            quitButton->CreateTexture("assets/image/button.png", renderer);
             replayButton->CreateTexture("assets/image/button.png", renderer);
             exitButton->CreateTexture("assets/image/button.png", renderer);
-            playButton->setCordinate(123,320);
-            quitButton->setCordinate(123,420);
-            replayButton->setCordinate(25,550);
-            exitButton->setCordinate(220,550);
 
+            // Set positions for buttons
+            playButton->setCordinate(123, 320);
+            quitButton->setCordinate(123, 420);
+            replayButton->setCordinate(25, 550);
+            exitButton->setCordinate(220, 550);
         }else {
             std::cout << "Not created!" <<std::endl;
         }

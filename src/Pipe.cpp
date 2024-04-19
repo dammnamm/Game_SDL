@@ -7,7 +7,7 @@ Pipe::Pipe()
 {
     pipeWidth = 84;
     pipeHeight = 501;
-    space = 190;
+    space = 185;
 }
 
 void Pipe::setPipe(int i)
@@ -24,8 +24,8 @@ int Pipe::pipeRandHeight()
 {
 	std::vector<int> height = {150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350};
 	std::srand(std::time(0));
-	int random_index = std::rand() % height.size(); // generate a random index
-    return height[random_index]; // return the random element
+	int random_index = std::rand() % height.size();
+    return height[random_index];
 }
 
 void Pipe::upPipeUpdate(int i)

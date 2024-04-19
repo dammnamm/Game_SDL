@@ -7,7 +7,6 @@ class Button:public Object
     public:
         Button();
         Button(int x, int y);
-        SDL_Rect src, dest;
         void setCordinate(int _x, int _y);
         void CheckSelected(const Mouse* mouse);
         void Render(SDL_Renderer* renderer);

@@ -11,9 +11,7 @@ private:
     int birdWidth;
     int birdHeight;
     int animationTimer;
-    SDL_Point flipPoint;
     double angle;
-    SDL_Point coordinate;
 
     double speed;
     double gravity;

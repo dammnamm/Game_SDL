@@ -1,9 +1,8 @@
 #include "Floor.h"
 
-Floor::Floor()
+Floor::Floor() : floorWidth(672) , floorHeight(224)
 {
-    floorWidth = 672;
-    floorHeight = 224;
+
     xPos1 = 0;
     xPos2 = 672;
     setSrc(0, 0, 336, 112);

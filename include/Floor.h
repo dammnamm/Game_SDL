@@ -11,8 +11,8 @@ class Floor:public Object
         void Update2();
         void Render(SDL_Renderer* renderer);
     private:
-        int floorWidth;
-        int floorHeight;
+        const int floorWidth;
+        const int floorHeight;
         int xPos1;
         int xPos2;
 

@@ -22,63 +22,77 @@
 class GameLoop
 {
 private:
-    const int HEIGHT = 768;
+    // Constants
     const int WIDTH = 432;
-    bool GameState;
+    const int HEIGHT = 768;
+    const int fontsize = 32;
+    const int textWidth = 64;
+    const int textHeight = 100;
+
+    // SDL Variables
     SDL_Window* window;
     SDL_Renderer* renderer;
-    //GAMEPLAY
+
+    // Game State
+    bool GameState;
+
+    // Background Objects
     Background background;
+    Background message;
+    Background gameOverBg;
+    Background menuBg;
+
+    // Bird and Floor
     Bird bird;
     Floor floor1;
     Floor floor2;
+
+    // Pipes
     vector<Pipe> upPipe;
     vector<Pipe> downPipe;
+
+    // Mouse
     Mouse* mouse = new Mouse;
 
+    // Buttons
+    Button* replayButton = new Button(0, 736);
+    Button* exitButton = new Button(0, 368);
+    Button* playButton = new Button(0, 0);
+    Button* quitButton = new Button(0, 920);
+
+    // Game State Flags
+    bool MenuState;
+    bool GamePlayState;
+    bool GameOverState;
     bool isPlaying = false;
     bool isGameOver = false;
     bool gameStarted = false;
-    Background message;
-    //GAMEOVER
-    Background gameOverBg;
-    Button* replayButton = new Button(0, 736);
-    Button* exitButton = new Button(0, 368);
-    //Menu
-    Background menuBg;
-    Button* playButton = new Button(0,0);
-    Button* quitButton = new Button(0,920);
-    //GameState
-    bool MenuState ;
-    bool GamePlayState;
-    bool GameOverState;
-    //Score
-    int textWidth = 64;
-    int textHeight = 100;
+    bool isBgSoundPlaying = false;
+    bool isIngameSoundPlaying = false;
+
+    // Score
+    int SCORE = 0;
     int highScore;
     TextObject highestScore;
     TextObject score;
-    int SCORE = 0;
     TTF_Font* scoreFont;
-    int fontsize = 32;
     SDL_Color white = { 250, 250, 250 };
 
-    //SOUND
+    // Sound
     Mix_Chunk* scoreSound;
     Mix_Chunk* clickSound;
     Mix_Chunk* wingSound;
     Mix_Music* dieSound;
     Mix_Music* bgSound;
     Mix_Music* inGameSound;
-    bool isBgSoundPlaying = false;
-    bool isIngameSoundPlaying = false;
 
 public:
+    // Constructor
     GameLoop();
-    bool getGameState();
-    void Update();
+    // Member functions
     void Initialize();
     void Event();
+    void Update();
     void Render();
     bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
     void CollisionDetection();
@@ -86,5 +100,6 @@ public:
     void HandleCollision();
     void NewGame();
     void Clear();
+    bool getGameState();
 };
 #endif // GAMELOOP_H

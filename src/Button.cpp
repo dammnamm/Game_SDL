@@ -35,5 +35,5 @@ void Button::CheckSelected(const Mouse* mouse)
 
 void Button::Render(SDL_Renderer* renderer)
 {
-    SDL_RenderCopy(renderer, getTexture(), &src, &dest);
+    SDL_RenderCopy(renderer, getTexture(), &getSrc(), &getDest());
 }

@@ -3,14 +3,9 @@
 Mouse::Mouse()
 {
 	cursor = { 0, 0, 30, 30 };
-	tip = { 0, 0, 1, 1 };
+	tip = { 0, 0, 1, 1};
 }
 
-
-Mouse::~Mouse()
-{
-
-}
 
 void Mouse::Render(SDL_Renderer* renderer)
 {

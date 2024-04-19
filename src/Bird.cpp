@@ -29,15 +29,14 @@ void Bird::Gravity(bool isPlaying)
 
 
     //setAngle
-    setPoint(birdWidth/3, birdHeight/3);
     angle = speed*5 - 10;
 	if (angle <= -30)
     {
-        angle = 0;
+        angle = -30;
     }
-	else if (angle >= 60)
+	else if (angle >= 30)
 	{
-		angle = 0;
+		angle = 30 ;
 	}
 
 	if(!isPlaying)
@@ -54,7 +53,7 @@ double Bird::GetTimeJump(double jumpTimer)
 void Bird::Jump()
 {
     jumpTimer = GetTimeJump(jumpTimer);
-    if(jumpTimer - lastJump > 200)
+    if(jumpTimer - lastJump > 150)
     {
         inJump = true;
         lastJump = jumpTimer;
@@ -80,16 +79,6 @@ void Bird::CreateTexture2 (const char* filePath, SDL_Renderer* renderer)
     Tex2 = TextureManager::Texture(filePath, renderer);
 }
 
-void Bird::setPoint(int _x, int _y)
-{
-    flipPoint.x = _x;
-    flipPoint.y = _y;
-}
-
-SDL_Point* Bird::getPoint()
-{
-    return &flipPoint;
-}
 
 void Bird::Reset()
 {
@@ -110,11 +99,11 @@ void Bird::Render(SDL_Renderer* renderer)
 {
     animationTimer++;
     if(animationTimer <= 25) {
-        SDL_RenderCopyEx(renderer, getTexture(), &getSrc(), &getDest(), 0, getPoint(), SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, getTexture(), &getSrc(), &getDest(), angle, NULL, SDL_FLIP_NONE);
     }else if(animationTimer <= 50) {
-        SDL_RenderCopyEx(renderer, Tex1, &getSrc(), &getDest(), 0, getPoint(), SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, Tex1, &getSrc(), &getDest(), angle, NULL, SDL_FLIP_NONE);
     }else if(animationTimer <= 75) {
-        SDL_RenderCopyEx(renderer, Tex2, &getSrc(), &getDest(), 0, getPoint(), SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, Tex2, &getSrc(), &getDest(), angle, NULL, SDL_FLIP_NONE);
     }else {
         animationTimer = 0;
     }

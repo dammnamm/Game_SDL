@@ -7,7 +7,6 @@ class Mouse: public Object
     public:
         SDL_Rect cursor, tip;
         Mouse();
-        ~Mouse();
         void Render(SDL_Renderer* renderer);
     private:
 };
