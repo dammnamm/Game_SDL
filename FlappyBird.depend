@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1713531791 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
+1713537577 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
 	"GameLoop.h"
 
-1713531782 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
+1713538174 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
 	<bits/stdc++.h>
 	"Object.h"
 	<SDL.h>
@@ -37,18 +37,18 @@
 1713526190 d:\learning\vnu-uet\2023-2024\project\flappybird\include\object.h
 	"TextureManager.h"
 
-1713532034 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\bird.cpp
+1713536809 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\bird.cpp
 	"Bird.h"
 
-1713532023 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
+1713536776 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
 	"Object.h"
 
-1713530125 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
+1713537488 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
 	"Pipe.h"
 	<ctime>
 	<vector>
 
-1713530125 d:\learning\vnu-uet\2023-2024\project\flappybird\include\pipe.h
+1713538114 d:\learning\vnu-uet\2023-2024\project\flappybird\include\pipe.h
 	"Object.h"
 	<ctime>
 	<vector>
@@ -59,10 +59,10 @@
 1712928587 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\background.cpp
 	"Background.h"
 
-1713525985 d:\learning\vnu-uet\2023-2024\project\flappybird\include\floor.h
+1713538205 d:\learning\vnu-uet\2023-2024\project\flappybird\include\floor.h
 	"Object.h"
 
-1713526076 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\floor.cpp
+1713537922 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\floor.cpp
 	"Floor.h"
 
 1711413375 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\menu.cpp

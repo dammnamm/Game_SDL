@@ -25,7 +25,7 @@ private:
     // Constants
     const int WIDTH = 432;
     const int HEIGHT = 768;
-    const int fontsize = 32;
+    const int fontsize = 24;
     const int textWidth = 64;
     const int textHeight = 100;
 

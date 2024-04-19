@@ -20,7 +20,7 @@ void Bird::Gravity(bool isPlaying)
 {
     if(JumpState())
     {
-        speed = jumpHeight; //reset speed;
+        speed = jumpHeight;
         inJump = false;
     }
     Ypos += speed/4;
@@ -52,8 +52,8 @@ double Bird::GetTimeJump(double jumpTimer)
 
 void Bird::Jump()
 {
-    jumpTimer = GetTimeJump(jumpTimer);
-    if(jumpTimer - lastJump > 150)
+    jumpTimer = SDL_GetTicks();
+    if(jumpTimer - lastJump > 180)
     {
         inJump = true;
         lastJump = jumpTimer;

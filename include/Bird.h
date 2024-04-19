@@ -26,8 +26,6 @@ public:
     double GetTimeJump(double jumpTimer);
     bool JumpState();
     void Jump();
-    SDL_Point* getPoint();
-    void setPoint(int _x, int _y);
     void CreateTexture1(const char* filePath, SDL_Renderer* renderer);
     void CreateTexture2(const char* filePath, SDL_Renderer* renderer);
     void Reset();

@@ -38,7 +38,7 @@ bool GameLoop::getGameState() {
 void GameLoop::Initialize()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
-    window = SDL_CreateWindow("Flappy Bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE);
+    window = SDL_CreateWindow("Flappy Bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
     if(window){
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
         if(renderer) {
@@ -128,7 +128,7 @@ void GameLoop::Initialize()
         {
             clickSound = Mix_LoadWAV("assets/sound/mouse_click.wav");
             wingSound = Mix_LoadWAV("assets/sound/sfx_wing.wav");
-            dieSound = Mix_LoadMUS("assets/sound/sfx_die.wav");
+            dieSound = Mix_LoadMUS("assets/sound/sfx_hit.wav");
             bgSound = Mix_LoadMUS("assets/sound/8_bit_rainy_city_lofi.mp3");
             inGameSound = Mix_LoadMUS("assets/sound/ingame.mp3");
             scoreSound = Mix_LoadWAV("assets/sound/scoresound.wav");
@@ -168,7 +168,7 @@ void GameLoop::Event() {
             if (event.key.keysym.sym == SDLK_SPACE) {
                 if (!bird.JumpState() && isPlaying) {
                     bird.Jump();
-                    Mix_PlayChannel(-1, wingSound, 0);;
+                    Mix_PlayChannel(-1, wingSound, 0);
                 }
                 if (!isPlaying || isGameOver) {
                     isPlaying = true;
@@ -281,7 +281,7 @@ void GameLoop::ScoreUpdate()
     {
         //SCORE
         score.setDest((375 - 250 - 32*int(to_string(SCORE).length())) / 2 + 250, 277, int(to_string(SCORE).length())*32, 50);
-        highestScore.setDest((375 - 250 - 32*int(to_string(highScore).length())) / 2 + 250, 370, int(to_string(highScore).length())*32 - 5, 50);
+        highestScore.setDest((375 - 250 - 32*int(to_string(highScore).length())) / 2 + 250, 366, int(to_string(highScore).length())*32, 50);
     }
     if(isGameOver)
     {
@@ -303,12 +303,12 @@ void GameLoop::Update() {
             //Bird
             bird.Gravity(isPlaying);
             //Pipe
-            upPipe[0].upPipeUpdate(0);
-            upPipe[1].upPipeUpdate(1);
-            upPipe[2].upPipeUpdate(2);
-            downPipe[0].downPipeUpdate(0);
-            downPipe[1].downPipeUpdate(1);
-            downPipe[2].downPipeUpdate(2);
+            upPipe[0].updateUpPipe(0);
+            upPipe[1].updateUpPipe(1);
+            upPipe[2].updateUpPipe(2);
+            downPipe[0].updateDownPipe(0);
+            downPipe[1].updateDownPipe(1);
+            downPipe[2].updateDownPipe(2);
             ScoreUpdate();
 
             //Floor
@@ -347,12 +347,12 @@ void GameLoop::Render() {
         background.Render(renderer);
         if(!isGameOver)
         {
-            upPipe[0].Render(renderer);
-            upPipe[1].Render(renderer);
-            upPipe[2].Render(renderer);
-            downPipe[0].Render(renderer);
-            downPipe[1].Render(renderer);
-            downPipe[2].Render(renderer);
+            upPipe[0].render(renderer);
+            upPipe[1].render(renderer);
+            upPipe[2].render(renderer);
+            downPipe[0].render(renderer);
+            downPipe[1].render(renderer);
+            downPipe[2].render(renderer);
         }
         score.Render(renderer);
         if(!isPlaying)
@@ -396,7 +396,6 @@ void GameLoop::NewGame() {
     score.setDest(xCenter, 200, textWidth, textHeight);
 
     score.WriteText(to_string(SCORE), scoreFont, white, renderer);
-    // Read high score from file
     std::ifstream read("assets/highscore.txt");
     read >> highScore;
     highestScore.WriteText(std::to_string(highScore), scoreFont, white, renderer);
