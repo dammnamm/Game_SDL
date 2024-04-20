@@ -27,8 +27,7 @@ GameLoop::GameLoop()
     inGameSound = NULL;
 
     // Resize vectors
-    upPipe.resize(3);
-    downPipe.resize(3);
+    pipes.resize(3);
 }
 
 bool GameLoop::getGameState() {
@@ -38,7 +37,7 @@ bool GameLoop::getGameState() {
 void GameLoop::Initialize()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
-    window = SDL_CreateWindow("Flappy Bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Flappy Bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE);
     if(window){
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
         if(renderer) {
@@ -63,16 +62,15 @@ void GameLoop::Initialize()
             floor2.CreateTexture("assets/image/land.png", renderer);
 
             // Load textures for pipes
-            for (int i = 0; i < 3; i++)
+            for(int i=0; i<3; i++)
             {
-                upPipe[i].CreateTexture("assets/image/pillarTop.png", renderer);
-                downPipe[i].CreateTexture("assets/image/pillarBottom.png", renderer);
+                pipes[i].CreateTexture("assets/image/pillarBottom.png", renderer);
             }
 
             // Set positions and create textures for pipes
-            for (int i = 0; i < 3; i++) {
-                upPipe[i].setPipe(i);
-                downPipe[i].setPipe(i);
+            for(int i=0; i<3; i++)
+            {
+                pipes[i].SetPosition(i);
             }
 
             // Load texture for mouse cursor
@@ -222,8 +220,8 @@ void GameLoop::CollisionManager()
     // Check collision with upper and lower pipes if in GamePlayState
     if (GamePlayState) {
         for (int i = 0; i < 3; ++i) {
-            if (CheckCollision(bird.getDest(), upPipe[i].getDest()) ||
-                CheckCollision(bird.getDest(), downPipe[i].getDest())) {
+            if (CheckCollision(bird.getDest(), pipes[i].getUpperDest()) ||
+                CheckCollision(bird.getDest(), pipes[i].getLowerDest())) {
                 HandleCollision();
                 break;
             }
@@ -250,18 +248,16 @@ void GameLoop::HandleCollision()
 }
 
 
-
-
 void GameLoop::ScoreUpdate()
 {
     if(GamePlayState)
     {
         const int birdLeft = bird.getDest().x;
         for(int i=0; i<3; i++) {
-            if(birdLeft== upPipe[i].getDest().x )
+            if(birdLeft== pipes[i].getUpperDest().x )
             {
-                if(!CheckCollision((&bird)->getDest(), (&upPipe[i])->getDest()) &&
-                    !CheckCollision((&bird)->getDest(), (&downPipe[i])->getDest()))
+                if (!CheckCollision((&bird)->getDest(), pipes[i].getUpperDest()) &&
+                    !CheckCollision((&bird)->getDest(), pipes[i].getLowerDest()))
                 {
                     SCORE += 1;
                     Mix_PlayChannel(-1, scoreSound, 0);
@@ -277,6 +273,7 @@ void GameLoop::ScoreUpdate()
     if(GameOverState)
     {
         //SCORE
+        highestScore.WriteText(to_string(highScore), scoreFont, white, renderer);
         score.setDest((375 - 250 - 32*int(to_string(SCORE).length())) / 2 + 250, 277, int(to_string(SCORE).length())*32, 50);
         highestScore.setDest((375 - 250 - 32*int(to_string(highScore).length())) / 2 + 250, 366, int(to_string(highScore).length())*32, 50);
     }
@@ -300,12 +297,10 @@ void GameLoop::Update() {
             //Bird
             bird.Gravity(isPlaying);
             //Pipe
-            upPipe[0].updateUpPipe(0);
-            upPipe[1].updateUpPipe(1);
-            upPipe[2].updateUpPipe(2);
-            downPipe[0].updateDownPipe(0);
-            downPipe[1].updateDownPipe(1);
-            downPipe[2].updateDownPipe(2);
+            pipes[0].Update();
+            pipes[1].Update();
+            pipes[2].Update();
+            //Score
             ScoreUpdate();
 
             //Floor
@@ -344,12 +339,9 @@ void GameLoop::Render() {
         background.Render(renderer);
         if(!isGameOver)
         {
-            upPipe[0].render(renderer);
-            upPipe[1].render(renderer);
-            upPipe[2].render(renderer);
-            downPipe[0].render(renderer);
-            downPipe[1].render(renderer);
-            downPipe[2].render(renderer);
+            pipes[0].Render(renderer);
+            pipes[1].Render(renderer);
+            pipes[2].Render(renderer);
         }
         score.Render(renderer);
         if(!isPlaying)
@@ -379,14 +371,10 @@ void GameLoop::NewGame() {
     bird.Reset();
     floor1.setDest(0, 650, 672, 224);
     floor2.setDest(672, 650, 672, 224);
-    upPipe.clear();
-    downPipe.clear();
     // Reset pipes
+    pipes.clear();
     for (int i = 0; i < 3; ++i) {
-        upPipe[i].setSrc(0, 0, 84, 501);
-        downPipe[i].setSrc(0, 0, 84, 501);
-        upPipe[i].setPipe(i);
-        downPipe[i].setPipe(i);
+        pipes[i].Reset(i);
     }
 
     int xCenter = (WIDTH - textWidth) / 2;

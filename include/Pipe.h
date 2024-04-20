@@ -5,24 +5,28 @@
 #include <ctime>
 #include <vector>
 
-static int upPipeHeight[3];
-static int pipePosition[3];
 
 class Pipe : public Object
 {
-    public:
-        Pipe();
-        void setPipe(int i);
-        int pipeWidth;
-        int pipeHeight;
-        int space = 300;
-        int downPipeHeight[3];
-        int generateRandomHeight();
-        void updateUpPipe(int i);
-        void updateDownPipe(int i);
-        void reset();
-        void render(SDL_Renderer* renderer);
-
+public:
+    Pipe();
+    void Update();
+    void Render(SDL_Renderer* renderer);
+    void SetPosition(int index);
+    int GetWidth() const;
+    int GetHeight() const;
+    void Reset(int index);
+    SDL_Rect& getUpperDest();
+    SDL_Rect& getLowerDest();
+private:
+    SDL_Rect UpperPipeRect;
+    SDL_Rect LowerPipeRect;
+    int Width;
+    int Height;
+    int pipeHeight;
+    int Space;
+    int Speed;
+    void GenerateRandomHeight();
 };
 
 #endif // PIPE_H

@@ -2,47 +2,65 @@
 #include <ctime>
 #include <vector>
 
-Pipe::Pipe() : pipeWidth(84), pipeHeight(501), space(185) {}
-
-void Pipe::setPipe(int i)
-{
-    std::srand(time(NULL));
-    setSrc(0, 0, pipeWidth, pipeHeight);
-    pipePosition[i] = (i+3)*300;
-    upPipeHeight[i] = generateRandomHeight();
-    downPipeHeight[i] = upPipeHeight[i] + space;
-    setDest(pipePosition[i], upPipeHeight[i] - pipeHeight, pipeWidth, pipeHeight);
+Pipe::Pipe() : Width(84), Height(501), Space(250), Speed(2) {
+    setSrc(0, 0 , Width, Height );
+    pipeHeight = 0;
+    UpperPipeRect = {0, 0 , Width, Height};
+    LowerPipeRect = {0, 0 , Width, Height};
 }
 
-int Pipe::generateRandomHeight()
+void Pipe::Update() {
+    UpperPipeRect.x -= Speed;
+    LowerPipeRect.x -= Speed;
+
+    if (UpperPipeRect.x + Width < 0) {
+        UpperPipeRect.x = 812;
+        LowerPipeRect.x = 812;
+        GenerateRandomHeight();
+    }
+}
+void Pipe::GenerateRandomHeight()
 {
 	std::vector<int> height = {150,160,170,180,190,200,210,220,230,240,250,260,};
 	std::srand(std::time(0));
 	int random_index = std::rand() % height.size();
-    return height[random_index];
+    pipeHeight = height[random_index];
+    UpperPipeRect.y = pipeHeight - Height;
+    LowerPipeRect.y =  pipeHeight + Space;
 }
 
-void Pipe::updateUpPipe(int i)
-{
-    if(pipePosition[i] + pipeWidth <= 0 )
-    {
-        upPipeHeight[i] = generateRandomHeight();
-        pipePosition[i] = 812;
-    }
-    else
-    {
-        pipePosition[i] -= 2;
-        setDest(pipePosition[i], upPipeHeight[i] - pipeHeight, pipeWidth, pipeHeight);
+void Pipe::SetPosition( int index) {
+    UpperPipeRect.x = (index+3)*300;
+    LowerPipeRect.x  = (index+3)*300;
+    if (pipeHeight == 0) {
+        GenerateRandomHeight();
     }
 }
 
-void Pipe::updateDownPipe(int i)
+void Pipe::Reset(int index)
 {
-    downPipeHeight[i] = upPipeHeight[i] + space;
-    setDest(pipePosition[i], downPipeHeight[i], pipeWidth, pipeHeight);
+    setSrc(0, 0 , Width, Height );
+    pipeHeight = 0;
+    UpperPipeRect = {0, 0 , Width, Height};
+    LowerPipeRect = {0, 0 , Width, Height};
+    SetPosition(index);
+    if (pipeHeight == 0) {
+        GenerateRandomHeight();
+    }
 }
 
-void Pipe::render(SDL_Renderer* renderer)
+SDL_Rect& Pipe::getLowerDest()
 {
-    SDL_RenderCopy(renderer, getTexture(), &getSrc(), &getDest());
+    return LowerPipeRect;
+}
+
+SDL_Rect& Pipe::getUpperDest()
+{
+    return UpperPipeRect;
+}
+
+void Pipe::Render(SDL_Renderer* renderer)
+{
+    SDL_RenderCopyEx(renderer, getTexture(), &getSrc(), &getLowerDest(), 0, NULL, SDL_FLIP_NONE );
+    SDL_RenderCopyEx(renderer, getTexture(), &getSrc(), &getUpperDest(), 0, NULL, SDL_FLIP_VERTICAL );
 }

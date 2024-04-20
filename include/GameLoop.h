@@ -48,8 +48,7 @@ private:
     Floor floor2;
 
     // Pipes
-    vector<Pipe> upPipe;
-    vector<Pipe> downPipe;
+    std::vector<Pipe> pipes;
 
     // Mouse
     Mouse* mouse = new Mouse;
