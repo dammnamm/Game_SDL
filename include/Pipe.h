@@ -13,8 +13,9 @@ public:
     void Update();
     void Render(SDL_Renderer* renderer);
     void SetPosition(int index);
-    int GetWidth() const;
-    int GetHeight() const;
+    int GetWidth();
+    int GetHeight();
+    int GetPipeHeight();
     void Reset(int index);
     SDL_Rect& getUpperDest();
     SDL_Rect& getLowerDest();

@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1713580035 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
+1714188633 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
 	"GameLoop.h"
 
-1713577503 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
+1714188776 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
 	<bits/stdc++.h>
 	"Object.h"
 	<SDL.h>
@@ -19,8 +19,9 @@
 	"Mouse.h"
 	"Button.h"
 	"TextObject.h"
+	"Power.h"
 
-1713544494 source:d:\learning\vnu-uet\2023-2024\project\flappybird\main.cpp
+1714134381 source:d:\learning\vnu-uet\2023-2024\project\flappybird\main.cpp
 	"GameLoop.h"
 
 1712720090 d:\learning\vnu-uet\2023-2024\project\flappybird\include\texturemanager.h
@@ -31,10 +32,10 @@
 1712720090 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\texturemanager.cpp
 	"TextureManager.h"
 
-1713529352 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\object.cpp
+1714145879 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\object.cpp
 	"Object.h"
 
-1713526190 d:\learning\vnu-uet\2023-2024\project\flappybird\include\object.h
+1714145883 d:\learning\vnu-uet\2023-2024\project\flappybird\include\object.h
 	"TextureManager.h"
 
 1713544953 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\bird.cpp
@@ -43,12 +44,12 @@
 1713544902 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
 	"Object.h"
 
-1713579839 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
+1714144804 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
 	"Pipe.h"
 	<ctime>
 	<vector>
 
-1713579832 d:\learning\vnu-uet\2023-2024\project\flappybird\include\pipe.h
+1714182803 d:\learning\vnu-uet\2023-2024\project\flappybird\include\pipe.h
 	"Object.h"
 	<ctime>
 	<vector>
@@ -92,4 +93,17 @@
 1713529382 d:\learning\vnu-uet\2023-2024\project\flappybird\include\button.h
 	"Object.h"
 	"Mouse.h"
+
+1714095862 d:\learning\vnu-uet\2023-2024\project\flappybird\include\test.h
+	"Object.h"
+
+1714131673 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\test.cpp
+	"Test.h"
+
+1714188176 d:\learning\vnu-uet\2023-2024\project\flappybird\include\power.h
+	"Object.h"
+	"Pipe.h"
+
+1714188516 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\power.cpp
+	"Power.h"
 

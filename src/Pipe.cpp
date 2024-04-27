@@ -9,19 +9,38 @@ Pipe::Pipe() : Width(84), Height(501), Space(250), Speed(2) {
     LowerPipeRect = {0, 0 , Width, Height};
 }
 
+int Pipe::GetWidth() {
+    return Width;
+}
+
+int Pipe::GetHeight()
+{
+return Height;
+}
+
+int Pipe::GetPipeHeight()
+{
+    return pipeHeight;
+}
+
 void Pipe::Update() {
+    // Update horizontal position
     UpperPipeRect.x -= Speed;
     LowerPipeRect.x -= Speed;
+
 
     if (UpperPipeRect.x + Width < 0) {
         UpperPipeRect.x = 812;
         LowerPipeRect.x = 812;
         GenerateRandomHeight();
     }
+
 }
+
+
 void Pipe::GenerateRandomHeight()
 {
-	std::vector<int> height = {150,160,170,180,190,200,210,220,230,240,250,260,};
+	std::vector<int> height = {150,160,170,180,190,200,210,220,230,240,250,};
 	std::srand(std::time(0));
 	int random_index = std::rand() % height.size();
     pipeHeight = height[random_index];

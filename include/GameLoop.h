@@ -17,7 +17,7 @@
 #include "Mouse.h"
 #include "Button.h"
 #include "TextObject.h"
-
+#include "Power.h"
 
 class GameLoop
 {
@@ -84,7 +84,9 @@ private:
     Mix_Music* dieSound;
     Mix_Music* bgSound;
     Mix_Music* inGameSound;
-
+    Mix_Chunk* power_collect_sounds;
+    //Power
+    Power power;
 public:
     // Constructor
     GameLoop();

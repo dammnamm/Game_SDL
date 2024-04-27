@@ -33,6 +33,12 @@ SDL_Texture* Object::getTexture()
     return tex;
 }
 
+void Object::set_y_src(int y)
+{
+    src.y = y;
+}
+
+
 void Object::CreateTexture(const char* filepath, SDL_Renderer* renderer)
 {
     tex = TextureManager::Texture(filepath, renderer);

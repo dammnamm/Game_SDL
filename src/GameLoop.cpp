@@ -67,11 +67,16 @@ void GameLoop::Initialize()
                 pipes[i].CreateTexture("assets/image/pillarBottom.png", renderer);
             }
 
+            //Load textures for power
+
+            power.CreateTexture("assets/image/coin.png", renderer);
+
             // Set positions and create textures for pipes
             for(int i=0; i<3; i++)
             {
                 pipes[i].SetPosition(i);
             }
+            power.set_coordinate();
 
             // Load texture for mouse cursor
             mouse->CreateTexture("assets/image/mouse.png", renderer);
@@ -129,6 +134,7 @@ void GameLoop::Initialize()
             bgSound = Mix_LoadMUS("assets/sound/8_bit_rainy_city_lofi.mp3");
             inGameSound = Mix_LoadMUS("assets/sound/ingame.mp3");
             scoreSound = Mix_LoadWAV("assets/sound/scoresound.wav");
+            power_collect_sounds = Mix_LoadWAV("assets/sound/power_collection.wav");
         }
     }
 }
@@ -189,7 +195,6 @@ void GameLoop::Event() {
                     MenuState = true;
                     GameOverState = false;
                     GamePlayState = false;
-                    isBgSoundPlaying = false;
                     NewGame();
                 }
             }
@@ -225,12 +230,23 @@ void GameLoop::CollisionManager()
                 HandleCollision();
                 break;
             }
+            if(CheckCollision(power.get_power_dest(), pipes[i].getUpperDest()) ||
+               CheckCollision(power.get_power_dest(), pipes[i].getLowerDest())) {
+                    power.set_coordinate();
+                    break;
+               }
         }
 
         // Check collision with floor
         if (CheckCollision(bird.getDest(), floor1.getDest()) ||
             CheckCollision(bird.getDest(), floor2.getDest())) {
             HandleCollision();
+        }
+        if(CheckCollision(bird.getDest(), power.get_power_dest()))
+        {
+            Mix_PlayChannel(-1, power_collect_sounds, 0);
+            power.isEated = true;
+            power.set_coordinate();
         }
     }
 }
@@ -300,6 +316,8 @@ void GameLoop::Update() {
             pipes[0].Update();
             pipes[1].Update();
             pipes[2].Update();
+            //Power
+            power.Update();
             //Score
             ScoreUpdate();
 
@@ -342,6 +360,10 @@ void GameLoop::Render() {
             pipes[0].Render(renderer);
             pipes[1].Render(renderer);
             pipes[2].Render(renderer);
+            if(power.isEated == false)
+            {
+                power.Render(renderer);
+            }
         }
         score.Render(renderer);
         if(!isPlaying)
@@ -369,6 +391,9 @@ void GameLoop::NewGame() {
     isGameOver = false;
     isPlaying = false;
     bird.Reset();
+    isBgSoundPlaying = false;
+    isIngameSoundPlaying = false;
+
     floor1.setDest(0, 650, 672, 224);
     floor2.setDest(672, 650, 672, 224);
     // Reset pipes

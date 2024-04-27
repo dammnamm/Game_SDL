@@ -42,6 +42,7 @@
 		<Unit filename="include/Mouse.h" />
 		<Unit filename="include/Object.h" />
 		<Unit filename="include/Pipe.h" />
+		<Unit filename="include/Power.h" />
 		<Unit filename="include/TextObject.h" />
 		<Unit filename="include/TextureManager.h" />
 		<Unit filename="main.cpp" />
@@ -53,6 +54,7 @@
 		<Unit filename="src/Mouse.cpp" />
 		<Unit filename="src/Object.cpp" />
 		<Unit filename="src/Pipe.cpp" />
+		<Unit filename="src/Power.cpp" />
 		<Unit filename="src/TextObject.cpp" />
 		<Unit filename="src/TextureManager.cpp" />
 		<Extensions>
