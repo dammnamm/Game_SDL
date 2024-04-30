@@ -8,7 +8,7 @@ Bird::Bird()
     Ypos = 384;
     ver_speed = 0;
     gravity = 0.1;
-    jumpHeight = -5;
+    jumpHeight = -4;
     setSrc(0,0, birdWidth, birdHeight);
     setDest(50,Ypos, birdWidth, birdHeight);
 }
@@ -24,6 +24,14 @@ void Bird::Gravity(bool isPlaying)
         {
             ver_speed = 5;
         }
+    }
+
+    angle = ver_speed*10 - 5;
+    if(angle <= -20)
+    {
+        angle = -20;
+    }else if(angle >= 20) {
+        angle = 20;
     }
 }
 
@@ -45,6 +53,7 @@ void Bird::Reset()
     birdHeight = 78;
     Ypos = 384;
     ver_speed = 0;
+    angle = 0;
     gravity = 0.1;
     jumpHeight = -4;
     setSrc(0,0, birdWidth, birdHeight);

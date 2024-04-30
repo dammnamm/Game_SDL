@@ -18,6 +18,12 @@ void Button::setCordinate(int _x, int _y)
     dest.y = _y;
 }
 
+void Button::set_src_xy(int _x, int _y)
+{
+    src.x = _x;
+    src.y = _y;
+}
+
 
 void Button::CheckSelected(const Mouse* mouse)
 {

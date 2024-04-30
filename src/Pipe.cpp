@@ -2,7 +2,7 @@
 #include <ctime>
 #include <vector>
 
-Pipe::Pipe() : Width(84), Height(501), Space(250), Speed(2) {
+Pipe::Pipe() : Width(84), Height(501), Space(225), Speed(2) {
     setSrc(0, 0 , Width, Height );
     pipeHeight = 0;
     UpperPipeRect = {0, 0 , Width, Height};
@@ -58,7 +58,6 @@ void Pipe::SetPosition( int index) {
 
 void Pipe::Reset(int index)
 {
-    setSrc(0, 0 , Width, Height );
     pipeHeight = 0;
     UpperPipeRect = {0, 0 , Width, Height};
     LowerPipeRect = {0, 0 , Width, Height};

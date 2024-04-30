@@ -7,12 +7,22 @@ GameLoop::GameLoop()
     GameState = false;
     // Game objects initialization
     floor1.setDest(0, 650, 672, 224);
+    //TextObject
     score.setSrc(0, 0, NULL, NULL);
     highestScore.setSrc(0, 0, NULL, NULL);
     score.setDest(184, 200, textWidth, textHeight);
     highestScore.setDest(184, 500, textWidth, textHeight);
-    message.setSrc(0, 0, 146, 210);
-    message.setDest(5, -40, 146 * 3 - 10, 210 * 3 - 10);
+    message.setSrc(0,0, NULL, NULL);
+    message.setDest(0,590,messageWidth, messageHeight);
+    settingBg.setSrc(0 ,0, 216, 384);
+    settingBg.setDest(105, 177, 216, 394);
+    background.setSrc(0, 0, 432, 768);
+    gameOverBg.setSrc(0,0, 384, 768);
+    gameOverBg.setDest(0,0, 432, 768);
+    menuBg.setSrc(0,0, 384, 768);
+    menuBg.setDest(0,0, 432, 768);
+    frame.setSrc(0,0, 220, 384);
+    frame.setDest(103, 175, 220, 394);
     // Game state flags
     bool MenuState = false;
     bool GamePlayState = false;
@@ -28,6 +38,7 @@ GameLoop::GameLoop()
 
     // Resize vectors
     pipes.resize(3);
+    //
 }
 
 bool GameLoop::getGameState() {
@@ -49,9 +60,10 @@ void GameLoop::Initialize()
 
             // Load textures for background, message, menu, and game over backgrounds
             background.CreateTexture("assets/image/background.png", renderer);
-            message.CreateTexture("assets/image/message.png", renderer);
             menuBg.CreateTexture("assets/image/menubackground.png", renderer);
             gameOverBg.CreateTexture("assets/image/gameoverbackground.png", renderer);
+            settingBg.CreateTexture("assets/image/theme_setting.png", renderer);
+            frame.CreateTexture("assets/image/frame.png", renderer);
 
             // Load textures for bird and its different states
             bird.CreateTexture("assets/image/player1.png", renderer);
@@ -69,14 +81,17 @@ void GameLoop::Initialize()
 
             //Load textures for power
 
-            power.CreateTexture("assets/image/coin.png", renderer);
+            gold.CreateTexture("assets/image/coin.png", renderer);
+            heart.CreateTexture("assets/image/heart.png", renderer);
 
             // Set positions and create textures for pipes
             for(int i=0; i<3; i++)
             {
                 pipes[i].SetPosition(i);
             }
-            power.set_coordinate();
+            // Set positions and create textures for powers
+            gold.set_coordinate();
+            heart.set_coordinate();
 
             // Load texture for mouse cursor
             mouse->CreateTexture("assets/image/mouse.png", renderer);
@@ -86,12 +101,24 @@ void GameLoop::Initialize()
             quitButton->CreateTexture("assets/image/button.png", renderer);
             replayButton->CreateTexture("assets/image/button.png", renderer);
             exitButton->CreateTexture("assets/image/button.png", renderer);
+            settingButton->CreateTexture("assets/image/button.png", renderer);
+            backButton->CreateTexture("assets/image/button.png", renderer);
+            questionButton->CreateTexture("assets/image/button.png", renderer);
+            soundButton->CreateTexture("assets/image/button.png", renderer);
+            back_button->CreateTexture("assets/image/button.png", renderer);
+            next_button->CreateTexture("assets/image/button.png", renderer);
 
             // Set positions for buttons
             playButton->setCordinate(123, 320);
             quitButton->setCordinate(123, 420);
             replayButton->setCordinate(25, 550);
             exitButton->setCordinate(220, 550);
+            settingButton->setCordinate(360,0);
+            backButton->setCordinate(0,0);
+            questionButton->setCordinate(360,650);
+            soundButton->setCordinate(10,682);
+            back_button->setCordinate(10, 385);
+            next_button->setCordinate(355, 385);
         }else {
             std::cout << "Not created!" <<std::endl;
         }
@@ -111,8 +138,10 @@ void GameLoop::Initialize()
     else
     {
         scoreFont = TTF_OpenFont("assets/font/flappy-bird-font/flappy-bird-font.ttf", fontsize);
+        message_font = TTF_OpenFont("assets/font/flappy-bird-font/CottonCloud.ttf", 20);
         score.WriteText(to_string(SCORE), scoreFont, white, renderer);
         highestScore.WriteText(to_string(highScore), scoreFont, white, renderer);
+        message.WriteText(text, message_font, white, renderer);
     }
 
     //MIXER
@@ -125,6 +154,7 @@ void GameLoop::Initialize()
         if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
         {
             std::cout << "SDL_mixer failed to initialize! Error: " << Mix_GetError() << std::endl;
+            Mix_VolumeMusic(50);
         }
         else
         {
@@ -158,9 +188,74 @@ void GameLoop::Event() {
                 if (quitButton->isSellected) {
                     GameState = false;
                 }
+                if(settingButton->isSellected) {
+                    SettingState = true;
+                    MenuState = false;
+                }
+                if(soundButton->isSellected)
+                {
+                    if(PlaySound)
+                    {
+                        soundButton->set_src_xy(0, 1280);
+                        soundButton->setCordinate(10, 682);
+                        PlaySound = false;
+                        Mix_VolumeMusic(0);
+                        Mix_Volume(-1, 0);
+                    }else {
+                        soundButton->set_src_xy(0, 1100);
+                        soundButton->setCordinate(10, 682);
+                        PlaySound = true;
+                        soundButton->Render(renderer);
+                        Mix_VolumeMusic(50);
+                        Mix_Volume(-1, 50);
+                    }
+                }
             }
         }
     }
+    if (SettingState)
+    {
+        if (event.type == SDL_MOUSEBUTTONUP) {
+            if (event.button.button == SDL_BUTTON_LEFT) {
+                if (backButton->isSellected)
+                {
+                    MenuState = true;
+                    SettingState = false;
+                    backButton->isSellected = false;
+                }
+                if(next_button->isSellected)
+                {
+                    settingBg.scroll(216,648);
+                    background.scroll(432, 1296);
+                    gameOverBg.scroll(384, 1152);
+                    menuBg.scroll(384, 1152);
+                    floor1.scroll(396, 1188);
+                    floor2.scroll(396, 1188);
+                    for(int i=0; i<3; i++)
+                    {
+                        pipes[i].scroll(84, 252);
+                    }
+                    next_button->isSellected = false;
+                }
+                if(back_button->isSellected)
+                {
+                    settingBg.scroll(-216,648);
+                    background.scroll(-432,1296);
+                    gameOverBg.scroll(-384,1152);
+                    menuBg.scroll(-384, 1152);
+                    floor1.scroll(-396, 1188);
+                    floor2.scroll(-396, 1188);
+                    for(int i=0; i<3; i++)
+                    {
+                        pipes[i].scroll(-84, 252);
+                    }
+                    back_button->isSellected = false;
+                }
+            }
+
+        }
+    }
+
     if (GamePlayState) {
         if (!isIngameSoundPlaying)
         {
@@ -220,34 +315,40 @@ bool GameLoop::CheckCollision(const SDL_Rect& a, const SDL_Rect& b)
 
 
 
-void GameLoop::CollisionManager()
-{
-    // Check collision with upper and lower pipes if in GamePlayState
+void GameLoop::CollisionManager() {
     if (GamePlayState) {
-        for (int i = 0; i < 3; ++i) {
-            if (CheckCollision(bird.getDest(), pipes[i].getUpperDest()) ||
-                CheckCollision(bird.getDest(), pipes[i].getLowerDest())) {
-                HandleCollision();
-                break;
-            }
-            if(CheckCollision(power.get_power_dest(), pipes[i].getUpperDest()) ||
-               CheckCollision(power.get_power_dest(), pipes[i].getLowerDest())) {
-                    power.set_coordinate();
+            for (int i = 0; i < 3; ++i) {
+                if (CheckCollision(bird.getDest(), pipes[i].getUpperDest()) ||
+                    CheckCollision(bird.getDest(), pipes[i].getLowerDest())) {
+                            HandleCollision();
+                }
+                if (CheckCollision(gold.get_power_dest(), pipes[i].getUpperDest()) ||
+                    CheckCollision(gold.get_power_dest(), pipes[i].getLowerDest())) {
+                    gold.set_coordinate();
                     break;
-               }
-        }
-
-        // Check collision with floor
-        if (CheckCollision(bird.getDest(), floor1.getDest()) ||
-            CheckCollision(bird.getDest(), floor2.getDest())) {
-            HandleCollision();
-        }
-        if(CheckCollision(bird.getDest(), power.get_power_dest()))
-        {
-            Mix_PlayChannel(-1, power_collect_sounds, 0);
-            power.isEated = true;
-            power.set_coordinate();
-        }
+                }
+                if (CheckCollision(heart.get_power_dest(), pipes[i].getUpperDest()) ||
+                    CheckCollision(heart.get_power_dest(), pipes[i].getLowerDest()) ||
+                    CheckCollision(heart.get_power_dest(), gold.get_power_dest())) {
+                    heart.set_coordinate();
+                    break;
+                }
+            }
+            // Check collision with floor
+            if (CheckCollision(bird.getDest(), floor1.getDest()) ||
+                CheckCollision(bird.getDest(), floor2.getDest())) {
+                    HandleCollision();
+                }
+            if (CheckCollision(bird.getDest(), gold.get_power_dest())) {
+                Mix_PlayChannel(-1, power_collect_sounds, 0);
+                gold.isEated = true;
+                gold.set_coordinate();
+            }
+            if (CheckCollision(bird.getDest(), heart.get_power_dest())) {
+                Mix_PlayChannel(-1, power_collect_sounds, 0);
+                heart.isEated = true;
+                heart.set_coordinate();
+            }
     }
 }
 
@@ -317,7 +418,8 @@ void GameLoop::Update() {
             pipes[1].Update();
             pipes[2].Update();
             //Power
-            power.Update();
+            gold.Update();
+            heart.Update();
             //Score
             ScoreUpdate();
 
@@ -334,6 +436,15 @@ void GameLoop::Update() {
     {
         playButton->CheckSelected(mouse);
         quitButton->CheckSelected(mouse);
+        settingButton->CheckSelected(mouse);
+        questionButton->CheckSelected(mouse);
+        soundButton->CheckSelected(mouse);
+    }
+    if(SettingState)
+    {
+        backButton->CheckSelected(mouse);
+        back_button->CheckSelected(mouse);
+        next_button->CheckSelected(mouse);
     }
     if(GameOverState)
     {
@@ -351,6 +462,23 @@ void GameLoop::Render() {
         menuBg.Render(renderer);
         playButton->Render(renderer);
         quitButton->Render(renderer);
+        settingButton->Render(renderer);
+        questionButton->Render(renderer);
+        if(questionButton->isSellected)
+        {
+            message.Render(renderer);
+        }
+        soundButton->Render(renderer);
+    }
+
+    if(SettingState)
+    {
+        background.Render(renderer);
+        settingBg.Render(renderer);
+        backButton->Render(renderer);
+        back_button->Render(renderer);
+        next_button->Render(renderer);
+        frame.Render(renderer);
     }
     if(GamePlayState)
     {
@@ -360,16 +488,16 @@ void GameLoop::Render() {
             pipes[0].Render(renderer);
             pipes[1].Render(renderer);
             pipes[2].Render(renderer);
-            if(power.isEated == false)
+            if(gold.isEated == false)
             {
-                power.Render(renderer);
+                gold.Render(renderer);
+            }
+            if(heart.isEated == false)
+            {
+                heart.Render(renderer);
             }
         }
         score.Render(renderer);
-        if(!isPlaying)
-        {
-            message.Render(renderer);
-        }
         floor1.Render(renderer);
         floor2.Render(renderer);
         bird.Render(renderer);

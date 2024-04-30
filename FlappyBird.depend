@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1714188633 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
+1714448725 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
 	"GameLoop.h"
 
-1714188776 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
+1714441149 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
 	<bits/stdc++.h>
 	"Object.h"
 	<SDL.h>
@@ -32,24 +32,24 @@
 1712720090 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\texturemanager.cpp
 	"TextureManager.h"
 
-1714145879 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\object.cpp
+1714445825 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\object.cpp
 	"Object.h"
 
-1714145883 d:\learning\vnu-uet\2023-2024\project\flappybird\include\object.h
+1714439482 d:\learning\vnu-uet\2023-2024\project\flappybird\include\object.h
 	"TextureManager.h"
 
-1713544953 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\bird.cpp
+1714396730 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\bird.cpp
 	"Bird.h"
 
-1713544902 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
+1714214434 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
 	"Object.h"
 
-1714144804 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
+1714448826 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
 	"Pipe.h"
 	<ctime>
 	<vector>
 
-1714182803 d:\learning\vnu-uet\2023-2024\project\flappybird\include\pipe.h
+1714217374 d:\learning\vnu-uet\2023-2024\project\flappybird\include\pipe.h
 	"Object.h"
 	<ctime>
 	<vector>
@@ -57,7 +57,7 @@
 1712720090 d:\learning\vnu-uet\2023-2024\project\flappybird\include\background.h
 	"Object.h"
 
-1712928587 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\background.cpp
+1714407725 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\background.cpp
 	"Background.h"
 
 1713538205 d:\learning\vnu-uet\2023-2024\project\flappybird\include\floor.h
@@ -87,10 +87,10 @@
 1713525823 d:\learning\vnu-uet\2023-2024\project\flappybird\include\mouse.h
 	"Object.h"
 
-1713529382 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\button.cpp
+1714389564 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\button.cpp
 	"Button.h"
 
-1713529382 d:\learning\vnu-uet\2023-2024\project\flappybird\include\button.h
+1714389536 d:\learning\vnu-uet\2023-2024\project\flappybird\include\button.h
 	"Object.h"
 	"Mouse.h"
 
@@ -104,6 +104,13 @@
 	"Object.h"
 	"Pipe.h"
 
-1714188516 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\power.cpp
+1714213703 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\power.cpp
 	"Power.h"
+
+1714362758 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\coin.cpp
+	"Coin.h"
+
+1714362768 d:\learning\vnu-uet\2023-2024\project\flappybird\include\coin.h
+	"Object.h"
+	"TextObject.h"
 

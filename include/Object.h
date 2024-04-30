@@ -13,6 +13,7 @@ public:
 	void setSrc(int x, int y, int w, int h);
 	void setDest(int x, int y, int w, int h);
 	void set_y_src(int y);
+	void scroll(int x, int k);
 	SDL_Texture* getTexture();
 	SDL_Rect& getSrc();
 	SDL_Rect& getDest();

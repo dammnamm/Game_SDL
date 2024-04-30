@@ -14,7 +14,7 @@ void Power::set_coordinate()
 }
 void Power::Update()
 {
-    power_dest.x--;
+    power_dest.x -= 2;
     if(power_dest.x + power_width <= 0)
     {
         set_coordinate();

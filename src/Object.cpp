@@ -27,6 +27,18 @@ SDL_Rect& Object::getDest()
     return dest;
 }
 
+void Object::scroll(int x, int k)
+{
+    src.x += x;
+    if(src.x + src.w >k)
+    {
+        src.x = 0;
+    }
+    if(src.x < 0)
+    {
+        src.x = k+x;
+    }
+}
 
 SDL_Texture* Object::getTexture()
 {

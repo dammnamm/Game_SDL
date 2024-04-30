@@ -38,9 +38,10 @@ private:
 
     // Background Objects
     Background background;
-    Background message;
     Background gameOverBg;
     Background menuBg;
+    Background settingBg;
+    Background frame;
 
     // Bird and Floor
     Bird bird;
@@ -58,7 +59,12 @@ private:
     Button* exitButton = new Button(0, 368);
     Button* playButton = new Button(0, 0);
     Button* quitButton = new Button(0, 920);
-
+    Button* settingButton = new Button(0, 1576);
+    Button* backButton = new Button(0, 1751);
+    Button* questionButton = new Button(0, 1400);
+    Button* soundButton = new Button(0, 1100);
+    Button* back_button = new Button(0, 1940);
+    Button* next_button = new Button(0, 2100);
     // Game State Flags
     bool MenuState;
     bool GamePlayState;
@@ -68,6 +74,7 @@ private:
     bool gameStarted = false;
     bool isBgSoundPlaying = false;
     bool isIngameSoundPlaying = false;
+    bool SettingState = false;
 
     // Score
     int SCORE = 0;
@@ -85,8 +92,16 @@ private:
     Mix_Music* bgSound;
     Mix_Music* inGameSound;
     Mix_Chunk* power_collect_sounds;
+    bool PlaySound = true;
     //Power
-    Power power;
+    Power gold;
+    Power heart;
+    //Message
+    TextObject message;
+    TTF_Font*  message_font;
+    const int messageWidth = 432;
+    const int messageHeight = 50;
+    std::string text = "PRESS SPACE TO JUMP";
 public:
     // Constructor
     GameLoop();
