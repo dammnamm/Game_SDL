@@ -40,6 +40,7 @@
 		<Unit filename="include/Coin.h" />
 		<Unit filename="include/Floor.h" />
 		<Unit filename="include/GameLoop.h" />
+		<Unit filename="include/GameSetting.h" />
 		<Unit filename="include/Mouse.h" />
 		<Unit filename="include/Object.h" />
 		<Unit filename="include/Pipe.h" />
@@ -53,6 +54,7 @@
 		<Unit filename="src/Coin.cpp" />
 		<Unit filename="src/Floor.cpp" />
 		<Unit filename="src/GameLoop.cpp" />
+		<Unit filename="src/GameSetting.cpp" />
 		<Unit filename="src/Mouse.cpp" />
 		<Unit filename="src/Object.cpp" />
 		<Unit filename="src/Pipe.cpp" />

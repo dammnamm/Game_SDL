@@ -1,18 +1,16 @@
 #include "GameLoop.h"
-
+#include "GameSetting.h"
 using namespace std;
 
 GameLoop* g = new GameLoop();
 
 int main(int argc, char* argv[])
 {
-    const int FPS = 144;
-    const int FrameDelay = 1000/FPS;
     Uint32 FrameStart;
     int FrameTime;
-
     g->Initialize();
     while(g->getGameState()){
+        const int FrameDelay = 1000/FPS;
         FrameStart = SDL_GetTicks();
         g->Render();
         g->Event();

@@ -19,6 +19,7 @@ public:
     void Reset(int index);
     SDL_Rect& getUpperDest();
     SDL_Rect& getLowerDest();
+    bool isCollide = false;
 private:
     SDL_Rect UpperPipeRect;
     SDL_Rect LowerPipeRect;

@@ -7,11 +7,15 @@ GameLoop::GameLoop()
     GameState = false;
     // Game objects initialization
     floor1.setDest(0, 650, 672, 224);
+    heart_image.setSrc(0,0, 47, 41);
+    heart_image.setDest(10,10, 30, 30);
     //TextObject
     score.setSrc(0, 0, NULL, NULL);
     highestScore.setSrc(0, 0, NULL, NULL);
+    heart_object.setSrc(0,0, NULL, NULL);
     score.setDest(184, 200, textWidth, textHeight);
     highestScore.setDest(184, 500, textWidth, textHeight);
+    heart_object.setDest(45, 10 , textWidth/3, textHeight/3);
     message.setSrc(0,0, NULL, NULL);
     message.setDest(0,590,messageWidth, messageHeight);
     settingBg.setSrc(0 ,0, 216, 384);
@@ -81,8 +85,10 @@ void GameLoop::Initialize()
 
             //Load textures for power
 
-            gold.CreateTexture("assets/image/coin.png", renderer);
             heart.CreateTexture("assets/image/heart.png", renderer);
+            heart_image.CreateTexture("assets/image/_heart.png", renderer);
+            titan.CreateTexture("assets/image/titan.png", renderer);
+            slow.CreateTexture("assets/image/slow.png", renderer);
 
             // Set positions and create textures for pipes
             for(int i=0; i<3; i++)
@@ -90,9 +96,9 @@ void GameLoop::Initialize()
                 pipes[i].SetPosition(i);
             }
             // Set positions and create textures for powers
-            gold.set_coordinate();
             heart.set_coordinate();
-
+            titan.set_coordinate();
+            slow.set_coordinate();
             // Load texture for mouse cursor
             mouse->CreateTexture("assets/image/mouse.png", renderer);
 
@@ -142,6 +148,7 @@ void GameLoop::Initialize()
         score.WriteText(to_string(SCORE), scoreFont, white, renderer);
         highestScore.WriteText(to_string(highScore), scoreFont, white, renderer);
         message.WriteText(text, message_font, white, renderer);
+        heart_object.WriteText("x" + to_string(heart_cnt), scoreFont, white, renderer);
     }
 
     //MIXER
@@ -302,7 +309,7 @@ void GameLoop::Event() {
     if (event.type == SDL_MOUSEBUTTONDOWN) {
         if (event.button.button == SDL_BUTTON_LEFT) {
             Mix_PlayChannel(-1, clickSound, 0);
-            std::cout << mouse->cursor.x << " " << mouse->cursor.y << std::endl;
+            std::cout << mouse->tip.x << " " << mouse->tip.y << std::endl;
         }
     }
 }
@@ -320,47 +327,80 @@ void GameLoop::CollisionManager() {
             for (int i = 0; i < 3; ++i) {
                 if (CheckCollision(bird.getDest(), pipes[i].getUpperDest()) ||
                     CheckCollision(bird.getDest(), pipes[i].getLowerDest())) {
-                            HandleCollision();
-                }
-                if (CheckCollision(gold.get_power_dest(), pipes[i].getUpperDest()) ||
-                    CheckCollision(gold.get_power_dest(), pipes[i].getLowerDest())) {
-                    gold.set_coordinate();
-                    break;
+                            if(!pipes[i].isCollide)
+                            {
+                                heart_cnt -= 1;
+                                pipes[i].isCollide = true;
+                            }
+                            break;
                 }
                 if (CheckCollision(heart.get_power_dest(), pipes[i].getUpperDest()) ||
-                    CheckCollision(heart.get_power_dest(), pipes[i].getLowerDest()) ||
-                    CheckCollision(heart.get_power_dest(), gold.get_power_dest())) {
-                    heart.set_coordinate();
+                    CheckCollision(heart.get_power_dest(), pipes[i].getLowerDest())) {
+                        heart.set_coordinate();
+                        break;
+                }
+                if (CheckCollision(slow.get_power_dest(), pipes[i].getUpperDest()) ||
+                    CheckCollision(slow.get_power_dest(), pipes[i].getLowerDest())) {
+                        slow.set_coordinate();
+                        break;
+                }
+                if (CheckCollision(titan.get_power_dest(), pipes[i].getUpperDest()) ||
+                    CheckCollision(titan.get_power_dest(), pipes[i].getLowerDest()) ||
+                    CheckCollision(titan.get_power_dest(), heart.get_power_dest())) {
+                    titan.set_coordinate();
                     break;
                 }
             }
             // Check collision with floor
             if (CheckCollision(bird.getDest(), floor1.getDest()) ||
                 CheckCollision(bird.getDest(), floor2.getDest())) {
-                    HandleCollision();
-                }
-            if (CheckCollision(bird.getDest(), gold.get_power_dest())) {
-                Mix_PlayChannel(-1, power_collect_sounds, 0);
-                gold.isEated = true;
-                gold.set_coordinate();
+                    heart_cnt--;
             }
             if (CheckCollision(bird.getDest(), heart.get_power_dest())) {
                 Mix_PlayChannel(-1, power_collect_sounds, 0);
                 heart.isEated = true;
+                heart_cnt++;
                 heart.set_coordinate();
             }
+
+            if (CheckCollision(bird.getDest(), slow.get_power_dest())) {
+                Mix_PlayChannel(-1, power_collect_sounds, 0);
+                slow.isEated = true;
+                is_slow = true;
+                slow_timer += 500;
+                slow.set_coordinate();
+            }
+            if (CheckCollision(bird.getDest(), titan.get_power_dest())) {
+                Mix_PlayChannel(-1, power_collect_sounds, 0);
+                titan.isEated = true;
+                bird.Grow();
+                titan.set_coordinate();
+            }
+            if(is_slow)
+            {
+                FPS = 60;
+                slow_timer--;
+                if(slow_timer <= 0)
+                {
+                    slow_timer = 0;
+                    FPS = 144;
+                    is_slow = false;
+                }
+            }
+            HandleCollision();
     }
 }
 
 void GameLoop::HandleCollision()
 {
-    if (GamePlayState) {
+    if(heart_cnt == 0) {
         isPlaying = false;
         isGameOver = true;
         GamePlayState = false;
         GameOverState = true;
         Mix_PlayMusic(dieSound, 1);
         ScoreUpdate();
+        SDL_Delay(500);
     }
 }
 
@@ -418,8 +458,9 @@ void GameLoop::Update() {
             pipes[1].Update();
             pipes[2].Update();
             //Power
-            gold.Update();
             heart.Update();
+            titan.Update();
+            slow.Update();
             //Score
             ScoreUpdate();
 
@@ -428,6 +469,7 @@ void GameLoop::Update() {
             floor2.Update2();
             //Test
             score.WriteText(to_string(SCORE), scoreFont, white, renderer);
+            heart_object.WriteText("x" + to_string(heart_cnt), scoreFont, white, renderer);
             CollisionManager();
         }
 
@@ -488,19 +530,25 @@ void GameLoop::Render() {
             pipes[0].Render(renderer);
             pipes[1].Render(renderer);
             pipes[2].Render(renderer);
-            if(gold.isEated == false)
-            {
-                gold.Render(renderer);
-            }
             if(heart.isEated == false)
             {
                 heart.Render(renderer);
             }
+            if(titan.isEated == false)
+            {
+                titan.Render(renderer);
+            }
+            if(slow.isEated == false)
+            {
+                slow.Render(renderer);
+            }
         }
         score.Render(renderer);
+        heart_object.Render(renderer);
         floor1.Render(renderer);
         floor2.Render(renderer);
         bird.Render(renderer);
+        heart_image.Render(renderer);
     }
     if(GameOverState)
     {
@@ -521,7 +569,7 @@ void GameLoop::NewGame() {
     bird.Reset();
     isBgSoundPlaying = false;
     isIngameSoundPlaying = false;
-
+    heart_cnt = 1;
     floor1.setDest(0, 650, 672, 224);
     floor2.setDest(672, 650, 672, 224);
     // Reset pipes

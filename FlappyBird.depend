@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1714448725 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
+1714828550 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
 	"GameLoop.h"
 
-1714441149 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
+1714828195 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
 	<bits/stdc++.h>
 	"Object.h"
 	<SDL.h>
@@ -20,9 +20,11 @@
 	"Button.h"
 	"TextObject.h"
 	"Power.h"
+	"GameSetting.h"
 
-1714134381 source:d:\learning\vnu-uet\2023-2024\project\flappybird\main.cpp
+1714826974 source:d:\learning\vnu-uet\2023-2024\project\flappybird\main.cpp
 	"GameLoop.h"
+	"GameSetting.h"
 
 1712720090 d:\learning\vnu-uet\2023-2024\project\flappybird\include\texturemanager.h
 	<iostream>
@@ -32,24 +34,25 @@
 1712720090 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\texturemanager.cpp
 	"TextureManager.h"
 
-1714445825 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\object.cpp
+1714791944 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\object.cpp
 	"Object.h"
 
-1714439482 d:\learning\vnu-uet\2023-2024\project\flappybird\include\object.h
+1714791536 d:\learning\vnu-uet\2023-2024\project\flappybird\include\object.h
 	"TextureManager.h"
 
-1714396730 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\bird.cpp
+1714543954 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\bird.cpp
 	"Bird.h"
 
-1714214434 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
+1714543979 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
 	"Object.h"
+	"GameSetting.h"
 
-1714448826 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
+1714748791 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\pipe.cpp
 	"Pipe.h"
 	<ctime>
 	<vector>
 
-1714217374 d:\learning\vnu-uet\2023-2024\project\flappybird\include\pipe.h
+1714748614 d:\learning\vnu-uet\2023-2024\project\flappybird\include\pipe.h
 	"Object.h"
 	<ctime>
 	<vector>
@@ -113,4 +116,9 @@
 1714362768 d:\learning\vnu-uet\2023-2024\project\flappybird\include\coin.h
 	"Object.h"
 	"TextObject.h"
+
+1714826613 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gamesetting.h
+
+1714826916 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gamesetting.cpp
+	"GameSetting.h"
 

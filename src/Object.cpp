@@ -40,6 +40,7 @@ void Object::scroll(int x, int k)
     }
 }
 
+
 SDL_Texture* Object::getTexture()
 {
     return tex;
@@ -54,4 +55,9 @@ void Object::set_y_src(int y)
 void Object::CreateTexture(const char* filepath, SDL_Renderer* renderer)
 {
     tex = TextureManager::Texture(filepath, renderer);
+}
+
+void Object::Render(SDL_Renderer* renderer)
+{
+    SDL_RenderCopy(renderer, getTexture(), &getSrc(), &getDest());
 }

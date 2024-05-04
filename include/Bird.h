@@ -2,7 +2,7 @@
 #define BIRD_H
 
 #include "Object.h"
-
+#include "GameSetting.h"
 class Bird:public Object
 {
 private:
@@ -23,6 +23,8 @@ public:
     void CreateTexture1(const char* filePath, SDL_Renderer* renderer);
     void CreateTexture2(const char* filePath, SDL_Renderer* renderer);
     void Reset();
+    void Grow();
+    void Slow(){FPS = 60;}
     void Render(SDL_Renderer* renderer);
 
 };

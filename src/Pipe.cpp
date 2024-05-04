@@ -46,6 +46,7 @@ void Pipe::GenerateRandomHeight()
     pipeHeight = height[random_index];
     UpperPipeRect.y = pipeHeight - Height;
     LowerPipeRect.y =  pipeHeight + Space;
+    isCollide = false;
 }
 
 void Pipe::SetPosition( int index) {

@@ -19,6 +19,8 @@
 #include "TextObject.h"
 #include "Power.h"
 
+#include "GameSetting.h"
+
 class GameLoop
 {
 private:
@@ -84,6 +86,11 @@ private:
     TTF_Font* scoreFont;
     SDL_Color white = { 250, 250, 250 };
 
+    // Heart
+    Power heart;
+    int heart_cnt = 1;
+    TextObject heart_object;
+    Background heart_image;
     // Sound
     Mix_Chunk* scoreSound;
     Mix_Chunk* clickSound;
@@ -94,8 +101,12 @@ private:
     Mix_Chunk* power_collect_sounds;
     bool PlaySound = true;
     //Power
-    Power gold;
-    Power heart;
+    Power titan;
+
+    //Slow
+    Power slow;
+    int slow_timer = 0;
+    bool is_slow = false;
     //Message
     TextObject message;
     TTF_Font*  message_font;

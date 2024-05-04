@@ -60,6 +60,12 @@ void Bird::Reset()
     setDest(50,Ypos, birdWidth, birdHeight);
 }
 
+void Bird::Grow()
+{
+    birdWidth += 5;
+    birdHeight += 5;
+    setDest(50,Ypos, birdWidth, birdHeight);
+}
 
 void Bird::Render(SDL_Renderer* renderer)
 {
