@@ -42,7 +42,12 @@ GameLoop::GameLoop()
 
     // Resize vectors
     pipes.resize(3);
-    //
+    //Power
+    powers.push_back(titan);
+    powers.push_back(heart);
+    powers.push_back(slow);
+    powers.push_back(speed);
+    current_power = rand()%4;
 }
 
 bool GameLoop::getGameState() {
@@ -51,6 +56,7 @@ bool GameLoop::getGameState() {
 
 void GameLoop::Initialize()
 {
+    std::cout << current_power << std::endl;
     SDL_Init(SDL_INIT_EVERYTHING);
     window = SDL_CreateWindow("Flappy Bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE);
     if(window){
@@ -85,10 +91,11 @@ void GameLoop::Initialize()
 
             //Load textures for power
 
-            heart.CreateTexture("assets/image/heart.png", renderer);
+            powers[1].CreateTexture("assets/image/heart.png", renderer);
             heart_image.CreateTexture("assets/image/_heart.png", renderer);
-            titan.CreateTexture("assets/image/titan.png", renderer);
-            slow.CreateTexture("assets/image/slow.png", renderer);
+            powers[0].CreateTexture("assets/image/titan.png", renderer);
+            powers[2].CreateTexture("assets/image/slow.png", renderer);
+            powers[3].CreateTexture("assets/image/speed.png", renderer);
 
             // Set positions and create textures for pipes
             for(int i=0; i<3; i++)
@@ -96,9 +103,7 @@ void GameLoop::Initialize()
                 pipes[i].SetPosition(i);
             }
             // Set positions and create textures for powers
-            heart.set_coordinate();
-            titan.set_coordinate();
-            slow.set_coordinate();
+            powers[current_power].set_coordinate();
             // Load texture for mouse cursor
             mouse->CreateTexture("assets/image/mouse.png", renderer);
 
@@ -317,79 +322,68 @@ void GameLoop::Event() {
 
 bool GameLoop::CheckCollision(const SDL_Rect& a, const SDL_Rect& b)
 {
-    return SDL_HasIntersection(&a, &b);
+    SDL_Rect a_temp = {a.x, a.y, a.w, a.h};
+    a_temp.w = a_temp.w * 0.9;
+    a_temp.h = a_temp.h * 0.9;
+    SDL_Rect b_temp = {b.x, b.y, b.w, b.h};
+
+    return SDL_HasIntersection(&a_temp, &b);
 }
 
 
 
 void GameLoop::CollisionManager() {
     if (GamePlayState) {
-            for (int i = 0; i < 3; ++i) {
-                if (CheckCollision(bird.getDest(), pipes[i].getUpperDest()) ||
-                    CheckCollision(bird.getDest(), pipes[i].getLowerDest())) {
-                            if(!pipes[i].isCollide)
-                            {
-                                heart_cnt -= 1;
-                                pipes[i].isCollide = true;
-                            }
-                            break;
+        for (int i = 0; i < 3; ++i) {
+            if (CheckCollision(bird.getDest(), pipes[i].getUpperDest()) ||
+                CheckCollision(bird.getDest(), pipes[i].getLowerDest())) {
+                if (!pipes[i].isCollide) {
+                    heart_cnt -= 1;
+                    pipes[i].isCollide = true;
                 }
-                if (CheckCollision(heart.get_power_dest(), pipes[i].getUpperDest()) ||
-                    CheckCollision(heart.get_power_dest(), pipes[i].getLowerDest())) {
-                        heart.set_coordinate();
-                        break;
-                }
-                if (CheckCollision(slow.get_power_dest(), pipes[i].getUpperDest()) ||
-                    CheckCollision(slow.get_power_dest(), pipes[i].getLowerDest())) {
-                        slow.set_coordinate();
-                        break;
-                }
-                if (CheckCollision(titan.get_power_dest(), pipes[i].getUpperDest()) ||
-                    CheckCollision(titan.get_power_dest(), pipes[i].getLowerDest()) ||
-                    CheckCollision(titan.get_power_dest(), heart.get_power_dest())) {
-                    titan.set_coordinate();
-                    break;
-                }
+                break;
             }
-            // Check collision with floor
-            if (CheckCollision(bird.getDest(), floor1.getDest()) ||
-                CheckCollision(bird.getDest(), floor2.getDest())) {
-                    heart_cnt--;
-            }
-            if (CheckCollision(bird.getDest(), heart.get_power_dest())) {
-                Mix_PlayChannel(-1, power_collect_sounds, 0);
-                heart.isEated = true;
-                heart_cnt++;
-                heart.set_coordinate();
-            }
+        }
 
-            if (CheckCollision(bird.getDest(), slow.get_power_dest())) {
-                Mix_PlayChannel(-1, power_collect_sounds, 0);
-                slow.isEated = true;
-                is_slow = true;
-                slow_timer += 500;
-                slow.set_coordinate();
+        // Check collision with floor
+        if (CheckCollision(bird.getDest(), floor1.getDest()) ||
+            CheckCollision(bird.getDest(), floor2.getDest())) {
+            heart_cnt--;
+        }
+
+        for (int i = 0; i < 3; ++i) {
+            if (CheckCollision(powers[current_power].get_power_dest(), pipes[i].getUpperDest()) ||
+                CheckCollision(powers[current_power].get_power_dest(), pipes[i].getLowerDest())) {
+                powers[current_power].set_coordinate();
+                break;
             }
-            if (CheckCollision(bird.getDest(), titan.get_power_dest())) {
-                Mix_PlayChannel(-1, power_collect_sounds, 0);
-                titan.isEated = true;
-                bird.Grow();
-                titan.set_coordinate();
-            }
-            if(is_slow)
-            {
-                FPS = 60;
-                slow_timer--;
-                if(slow_timer <= 0)
+        }
+
+
+
+        if (CheckCollision(bird.getDest(), powers[current_power].get_power_dest())) {
+            if (!powers[current_power].isEated) {
+                powers[current_power].isEated = true;
+                if (current_power == 0) {
+                    isTitan = true;
+                } else if (current_power == 1) {
+                        isHeart = true;
+                } else if (current_power == 2) {
+                        is_slow = true;
+                }else if(current_power == 3)
                 {
-                    slow_timer = 0;
-                    FPS = 144;
-                    is_slow = false;
+                    isSpeed = true;
                 }
-            }
-            HandleCollision();
+                current_power = rand() % 4;
+                Mix_PlayChannel(-1, power_collect_sounds, 0);
+                }
+        }
+
+        PowerManager();
+        HandleCollision();
     }
 }
+
 
 void GameLoop::HandleCollision()
 {
@@ -401,9 +395,53 @@ void GameLoop::HandleCollision()
         Mix_PlayMusic(dieSound, 1);
         ScoreUpdate();
         SDL_Delay(500);
+        FPS = 144;
     }
 }
 
+void GameLoop::PowerManager()
+{
+    if(isTitan)
+    {
+        bird.Grow();
+        isTitan = false;
+    }
+    if(isHeart)
+    {
+        heart_cnt++;
+        isHeart = false;
+    }
+    if(is_slow)
+    {
+        if(slow_timer == 0)
+        {
+            slow_timer  = 200;
+        }
+        FPS = 60;
+        slow_timer--;
+        if(slow_timer <= 0)
+        {
+            slow_timer = 0;
+            FPS = 144;
+            is_slow = false;
+        }
+    }
+    if(isSpeed)
+    {
+        if(speed_timer == 0)
+        {
+            speed_timer  = 240;
+        }
+        FPS = 200;
+        speed_timer--;
+        if(speed_timer <= 0)
+        {
+            speed_timer = 0;
+            FPS = 144;
+            isSpeed = false;
+        }
+    }
+}
 
 void GameLoop::ScoreUpdate()
 {
@@ -458,9 +496,7 @@ void GameLoop::Update() {
             pipes[1].Update();
             pipes[2].Update();
             //Power
-            heart.Update();
-            titan.Update();
-            slow.Update();
+            powers[current_power].Update();
             //Score
             ScoreUpdate();
 
@@ -530,17 +566,9 @@ void GameLoop::Render() {
             pipes[0].Render(renderer);
             pipes[1].Render(renderer);
             pipes[2].Render(renderer);
-            if(heart.isEated == false)
+            if(!powers[current_power].isEated)
             {
-                heart.Render(renderer);
-            }
-            if(titan.isEated == false)
-            {
-                titan.Render(renderer);
-            }
-            if(slow.isEated == false)
-            {
-                slow.Render(renderer);
+                powers[current_power].Render(renderer);
             }
         }
         score.Render(renderer);
@@ -572,6 +600,10 @@ void GameLoop::NewGame() {
     heart_cnt = 1;
     floor1.setDest(0, 650, 672, 224);
     floor2.setDest(672, 650, 672, 224);
+    isTitan = false;
+    is_slow = false;
+    isHeart = false;
+    slow_timer = 0;
     // Reset pipes
     pipes.clear();
     for (int i = 0; i < 3; ++i) {

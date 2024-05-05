@@ -37,7 +37,6 @@
 		<Unit filename="include/Background.h" />
 		<Unit filename="include/Bird.h" />
 		<Unit filename="include/Button.h" />
-		<Unit filename="include/Coin.h" />
 		<Unit filename="include/Floor.h" />
 		<Unit filename="include/GameLoop.h" />
 		<Unit filename="include/GameSetting.h" />
@@ -51,7 +50,6 @@
 		<Unit filename="src/Background.cpp" />
 		<Unit filename="src/Bird.cpp" />
 		<Unit filename="src/Button.cpp" />
-		<Unit filename="src/Coin.cpp" />
 		<Unit filename="src/Floor.cpp" />
 		<Unit filename="src/GameLoop.cpp" />
 		<Unit filename="src/GameSetting.cpp" />

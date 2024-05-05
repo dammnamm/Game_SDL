@@ -86,11 +86,6 @@ private:
     TTF_Font* scoreFont;
     SDL_Color white = { 250, 250, 250 };
 
-    // Heart
-    Power heart;
-    int heart_cnt = 1;
-    TextObject heart_object;
-    Background heart_image;
     // Sound
     Mix_Chunk* scoreSound;
     Mix_Chunk* clickSound;
@@ -101,12 +96,21 @@ private:
     Mix_Chunk* power_collect_sounds;
     bool PlaySound = true;
     //Power
+    Power speed;
+    int speed_timer = 0;
+    bool isSpeed = false;
     Power titan;
-
-    //Slow
+    std::vector<Power> powers;
     Power slow;
     int slow_timer = 0;
     bool is_slow = false;
+    Power heart;
+    int heart_cnt = 1;
+    TextObject heart_object;
+    Background heart_image;
+    bool isTitan = false;
+    bool isHeart = false;
+    int current_power;
     //Message
     TextObject message;
     TTF_Font*  message_font;
@@ -123,6 +127,7 @@ public:
     void Render();
     bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
     void CollisionManager();
+    void PowerManager();
     void ScoreUpdate();
     void HandleCollision();
     void NewGame();
