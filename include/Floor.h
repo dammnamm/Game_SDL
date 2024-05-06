@@ -2,7 +2,7 @@
 #define FLOOR_H
 
 #include "Object.h"
-
+#include "GameSetting.h"
 class Floor:public Object
 {
     public:

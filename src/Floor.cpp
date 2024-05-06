@@ -1,6 +1,6 @@
 #include "Floor.h"
 
-Floor::Floor() : floorWidth(672) , floorHeight(224)
+Floor::Floor():floorWidth(672), floorHeight(224)
 {
 
     xPos1 = 0;

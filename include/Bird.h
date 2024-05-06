@@ -24,7 +24,6 @@ public:
     void CreateTexture2(const char* filePath, SDL_Renderer* renderer);
     void Reset();
     void Grow();
-    void Slow(){FPS = 60;}
     void Render(SDL_Renderer* renderer);
 
 };

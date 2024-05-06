@@ -56,7 +56,6 @@ bool GameLoop::getGameState() {
 
 void GameLoop::Initialize()
 {
-    std::cout << current_power << std::endl;
     SDL_Init(SDL_INIT_EVERYTHING);
     window = SDL_CreateWindow("Flappy Bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE);
     if(window){
@@ -166,10 +165,10 @@ void GameLoop::Initialize()
         if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
         {
             std::cout << "SDL_mixer failed to initialize! Error: " << Mix_GetError() << std::endl;
-            Mix_VolumeMusic(50);
         }
         else
         {
+            Mix_VolumeMusic(50);
             clickSound = Mix_LoadWAV("assets/sound/mouse_click.wav");
             wingSound = Mix_LoadWAV("assets/sound/sfx_wing.wav");
             dieSound = Mix_LoadMUS("assets/sound/sfx_hit.wav");
@@ -323,8 +322,8 @@ void GameLoop::Event() {
 bool GameLoop::CheckCollision(const SDL_Rect& a, const SDL_Rect& b)
 {
     SDL_Rect a_temp = {a.x, a.y, a.w, a.h};
-    a_temp.w = a_temp.w * 0.9;
-    a_temp.h = a_temp.h * 0.9;
+    a_temp.w = a_temp.w * 0.8;
+    a_temp.h = a_temp.h * 0.8;
     SDL_Rect b_temp = {b.x, b.y, b.w, b.h};
 
     return SDL_HasIntersection(&a_temp, &b);
@@ -432,7 +431,7 @@ void GameLoop::PowerManager()
         {
             speed_timer  = 240;
         }
-        FPS = 200;
+        FPS = 240;
         speed_timer--;
         if(speed_timer <= 0)
         {
@@ -505,6 +504,7 @@ void GameLoop::Update() {
             floor2.Update2();
             //Test
             score.WriteText(to_string(SCORE), scoreFont, white, renderer);
+            highestScore.WriteText(to_string(SCORE), scoreFont, white, renderer);
             heart_object.WriteText("x" + to_string(heart_cnt), scoreFont, white, renderer);
             CollisionManager();
         }
@@ -604,6 +604,8 @@ void GameLoop::NewGame() {
     is_slow = false;
     isHeart = false;
     slow_timer = 0;
+    isSpeed = false;
+    speed_timer = 0;
     // Reset pipes
     pipes.clear();
     for (int i = 0; i < 3; ++i) {

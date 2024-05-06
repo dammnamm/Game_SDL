@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1714884674 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
+1714997582 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gameloop.cpp
 	"GameLoop.h"
 
-1714884310 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
+1714997107 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gameloop.h
 	<bits/stdc++.h>
 	"Object.h"
 	<SDL.h>
@@ -22,7 +22,7 @@
 	"Power.h"
 	"GameSetting.h"
 
-1714826974 source:d:\learning\vnu-uet\2023-2024\project\flappybird\main.cpp
+1714995580 source:d:\learning\vnu-uet\2023-2024\project\flappybird\main.cpp
 	"GameLoop.h"
 	"GameSetting.h"
 
@@ -43,7 +43,7 @@
 1714543954 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\bird.cpp
 	"Bird.h"
 
-1714543979 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
+1714995555 d:\learning\vnu-uet\2023-2024\project\flappybird\include\bird.h
 	"Object.h"
 	"GameSetting.h"
 
@@ -63,10 +63,11 @@
 1714407725 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\background.cpp
 	"Background.h"
 
-1713538205 d:\learning\vnu-uet\2023-2024\project\flappybird\include\floor.h
+1714996151 d:\learning\vnu-uet\2023-2024\project\flappybird\include\floor.h
 	"Object.h"
+	"GameSetting.h"
 
-1713538205 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\floor.cpp
+1714996184 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\floor.cpp
 	"Floor.h"
 
 1711413375 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\menu.cpp
@@ -117,8 +118,11 @@
 	"Object.h"
 	"TextObject.h"
 
-1714826613 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gamesetting.h
+1714996184 d:\learning\vnu-uet\2023-2024\project\flappybird\include\gamesetting.h
 
 1714826916 source:d:\learning\vnu-uet\2023-2024\project\flappybird\src\gamesetting.cpp
+	"GameSetting.h"
+
+1714995770 source:d:\learning\vnu-uet\2023-2024\project\flappybird\include\gamesetting.cpp
 	"GameSetting.h"
 

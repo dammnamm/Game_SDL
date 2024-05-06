@@ -3,5 +3,4 @@
 
 
 extern int FPS;
-
 #endif // GAMESETTING_H
