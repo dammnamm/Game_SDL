@@ -2,7 +2,7 @@
 #include <ctime>
 #include <vector>
 
-Pipe::Pipe() : Width(84), Height(501), Space(225), Speed(2) {
+Pipe::Pipe() : Width(84), Height(501), Space(225), h_speed(2), accelerator(1), v_speed(1) {
     setSrc(0, 0 , Width, Height );
     pipeHeight = 0;
     UpperPipeRect = {0, 0 , Width, Height};
@@ -23,20 +23,43 @@ int Pipe::GetPipeHeight()
     return pipeHeight;
 }
 
-void Pipe::Update() {
+void Pipe::Horizontal_Move() {
     // Update horizontal position
-    UpperPipeRect.x -= Speed;
-    LowerPipeRect.x -= Speed;
+    UpperPipeRect.x -= h_speed;
+    LowerPipeRect.x -= h_speed;
 
-
-    if (UpperPipeRect.x + Width < 0) {
-        UpperPipeRect.x = 812;
-        LowerPipeRect.x = 812;
-        GenerateRandomHeight();
+    if(angle == 0) {
+        if (UpperPipeRect.x + Width < 0) {
+            UpperPipeRect.x = 812;
+            LowerPipeRect.x = 812;
+            GenerateRandomHeight();
+        }
+    }else
+    {
+        if (UpperPipeRect.x + 50 < 0) {
+            UpperPipeRect.x = 812;
+            LowerPipeRect.x = 812;
+            GenerateRandomHeight();
+        }
     }
-
 }
 
+void Pipe::Vertical_Move()
+{
+    accelerator = UpdateVerticalAcceleration(UpperPipeRect.y, -400, -200);
+    UpperPipeRect.y += v_speed* accelerator;
+    LowerPipeRect.y += v_speed* accelerator;
+}
+
+int Pipe::UpdateVerticalAcceleration(int current_y, int min_y, int max_y) {
+    if (current_y <= min_y) {
+        return 1;
+    } else if (current_y >= max_y) {
+        return -1;
+    } else {
+        return accelerator;
+    }
+}
 
 void Pipe::GenerateRandomHeight()
 {
@@ -57,9 +80,17 @@ void Pipe::SetPosition( int index) {
     }
 }
 
+void Pipe::Angle_Update()
+{
+    angle = -45;
+    Space = 100;
+}
+
 void Pipe::Reset(int index)
 {
     pipeHeight = 0;
+    angle = 0;
+    Space = 225;
     UpperPipeRect = {0, 0 , Width, Height};
     LowerPipeRect = {0, 0 , Width, Height};
     SetPosition(index);
@@ -80,6 +111,12 @@ SDL_Rect& Pipe::getUpperDest()
 
 void Pipe::Render(SDL_Renderer* renderer)
 {
-    SDL_RenderCopyEx(renderer, getTexture(), &getSrc(), &getLowerDest(), 0, NULL, SDL_FLIP_NONE );
-    SDL_RenderCopyEx(renderer, getTexture(), &getSrc(), &getUpperDest(), 0, NULL, SDL_FLIP_VERTICAL );
+    SDL_RenderCopyEx(renderer, getTexture(), &getSrc(), &getLowerDest(), angle, NULL, SDL_FLIP_NONE );
+    if(angle == 0) {
+        SDL_RenderCopyEx(renderer, getTexture(), &getSrc(), &getUpperDest(), angle, NULL, SDL_FLIP_VERTICAL );
+    }else
+    {
+        SDL_RenderCopyEx(renderer, getTexture(), &getSrc(), &getUpperDest(), - angle, NULL, SDL_FLIP_VERTICAL );
+    }
+    SDL_RenderDrawLine(renderer, getUpperDest().x, getUpperDest().y, getUpperDest().x + getUpperDest().w, getUpperDest().y + getUpperDest().h );
 }

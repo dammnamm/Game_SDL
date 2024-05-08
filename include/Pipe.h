@@ -10,7 +10,8 @@ class Pipe : public Object
 {
 public:
     Pipe();
-    void Update();
+    void Horizontal_Move();
+    void Vertical_Move();
     void Render(SDL_Renderer* renderer);
     void SetPosition(int index);
     int GetWidth();
@@ -19,15 +20,20 @@ public:
     void Reset(int index);
     SDL_Rect& getUpperDest();
     SDL_Rect& getLowerDest();
+    int UpdateVerticalAcceleration(int current_y, int min_y, int max_y);
+    void Angle_Update();
     bool isCollide = false;
 private:
+    int accelerator;
     SDL_Rect UpperPipeRect;
     SDL_Rect LowerPipeRect;
+    int angle = 0;
     int Width;
     int Height;
     int pipeHeight;
     int Space;
-    int Speed;
+    int h_speed;
+    int v_speed;
     void GenerateRandomHeight();
 };
 

@@ -96,9 +96,6 @@ private:
     Mix_Chunk* power_collect_sounds;
     bool PlaySound = true;
     //Power
-    Power speed;
-    int speed_timer = 0;
-    bool isSpeed = false;
     Power titan;
     std::vector<Power> powers;
     Power slow;

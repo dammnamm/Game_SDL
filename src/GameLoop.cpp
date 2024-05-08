@@ -46,8 +46,7 @@ GameLoop::GameLoop()
     powers.push_back(titan);
     powers.push_back(heart);
     powers.push_back(slow);
-    powers.push_back(speed);
-    current_power = rand()%4;
+    current_power = rand()%3;
 }
 
 bool GameLoop::getGameState() {
@@ -89,12 +88,10 @@ void GameLoop::Initialize()
             }
 
             //Load textures for power
-
+            powers[0].CreateTexture("assets/image/titan.png", renderer);
             powers[1].CreateTexture("assets/image/heart.png", renderer);
             heart_image.CreateTexture("assets/image/_heart.png", renderer);
-            powers[0].CreateTexture("assets/image/titan.png", renderer);
             powers[2].CreateTexture("assets/image/slow.png", renderer);
-            powers[3].CreateTexture("assets/image/speed.png", renderer);
 
             // Set positions and create textures for pipes
             for(int i=0; i<3; i++)
@@ -369,17 +366,14 @@ void GameLoop::CollisionManager() {
                         isHeart = true;
                 } else if (current_power == 2) {
                         is_slow = true;
-                }else if(current_power == 3)
-                {
-                    isSpeed = true;
                 }
-                current_power = rand() % 4;
+                current_power = rand() % 3;
                 Mix_PlayChannel(-1, power_collect_sounds, 0);
                 }
         }
 
         PowerManager();
-        HandleCollision();
+        //HandleCollision();
     }
 }
 
@@ -423,21 +417,6 @@ void GameLoop::PowerManager()
             slow_timer = 0;
             FPS = 144;
             is_slow = false;
-        }
-    }
-    if(isSpeed)
-    {
-        if(speed_timer == 0)
-        {
-            speed_timer  = 240;
-        }
-        FPS = 240;
-        speed_timer--;
-        if(speed_timer <= 0)
-        {
-            speed_timer = 0;
-            FPS = 144;
-            isSpeed = false;
         }
     }
 }
@@ -491,9 +470,24 @@ void GameLoop::Update() {
             //Bird
             bird.Gravity(isPlaying);
             //Pipe
-            pipes[0].Update();
-            pipes[1].Update();
-            pipes[2].Update();
+            pipes[0].Horizontal_Move();
+            pipes[1].Horizontal_Move();
+            pipes[2].Horizontal_Move();
+            if(SCORE >=8 && SCORE <= 15)
+            {
+                pipes[0].Vertical_Move();
+                pipes[1].Vertical_Move();
+                pipes[2].Vertical_Move();
+            }
+            if(SCORE >=15)
+            {
+                pipes[0].Vertical_Move();
+                pipes[1].Vertical_Move();
+                pipes[2].Vertical_Move();
+                pipes[0].Angle_Update();
+                pipes[1].Angle_Update();
+                pipes[2].Angle_Update();
+            }
             //Power
             powers[current_power].Update();
             //Score
@@ -604,8 +598,6 @@ void GameLoop::NewGame() {
     is_slow = false;
     isHeart = false;
     slow_timer = 0;
-    isSpeed = false;
-    speed_timer = 0;
     // Reset pipes
     pipes.clear();
     for (int i = 0; i < 3; ++i) {
