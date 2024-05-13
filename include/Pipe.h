@@ -21,7 +21,6 @@ public:
     SDL_Rect& getUpperDest();
     SDL_Rect& getLowerDest();
     int UpdateVerticalAcceleration(int current_y, int min_y, int max_y);
-    void Angle_Update();
     bool isCollide = false;
 private:
     int accelerator;

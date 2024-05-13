@@ -15,7 +15,7 @@ GameLoop::GameLoop()
     heart_object.setSrc(0,0, NULL, NULL);
     score.setDest(184, 200, textWidth, textHeight);
     highestScore.setDest(184, 500, textWidth, textHeight);
-    heart_object.setDest(45, 10 , textWidth/3, textHeight/3);
+    heart_object.setDest(45, 10 , textWidth/3 + 5, textHeight/3);
     message.setSrc(0,0, NULL, NULL);
     message.setDest(0,590,messageWidth, messageHeight);
     settingBg.setSrc(0 ,0, 216, 384);
@@ -47,6 +47,15 @@ GameLoop::GameLoop()
     powers.push_back(heart);
     powers.push_back(slow);
     current_power = rand()%3;
+
+    //Object
+
+    bronze.setSrc(0,0, 96, 102 );
+    silver.setSrc(0,0, 96, 102 );
+    gold.setSrc(0,0, 120, 120 );
+    bronze.setDest(265,420, 96, 102 );
+    silver.setDest(265,420, 96, 102 );
+    gold.setDest(265,420, 120, 120 );
 }
 
 bool GameLoop::getGameState() {
@@ -66,6 +75,11 @@ void GameLoop::Initialize()
             GameState = true;
             MenuState = true;
 
+
+            //Load textures for Object
+            bronze.CreateTexture("assets/image/Bronze.png", renderer);
+            silver.CreateTexture("assets/image/Silver.png", renderer);
+            gold.CreateTexture("assets/image/Gold.png", renderer);
             // Load textures for background, message, menu, and game over backgrounds
             background.CreateTexture("assets/image/background.png", renderer);
             menuBg.CreateTexture("assets/image/menubackground.png", renderer);
@@ -371,25 +385,30 @@ void GameLoop::CollisionManager() {
                 Mix_PlayChannel(-1, power_collect_sounds, 0);
                 }
         }
+        if(!CheckCollision(bird.getDest(), background.getDest()))
+        {
+            HandleCollision();
+        }
 
         PowerManager();
-        //HandleCollision();
+        if(heart_cnt <= 0)
+        {
+            HandleCollision();
+        }
     }
 }
 
 
 void GameLoop::HandleCollision()
 {
-    if(heart_cnt == 0) {
-        isPlaying = false;
-        isGameOver = true;
-        GamePlayState = false;
-        GameOverState = true;
-        Mix_PlayMusic(dieSound, 1);
-        ScoreUpdate();
-        SDL_Delay(500);
-        FPS = 144;
-    }
+    isPlaying = false;
+    isGameOver = true;
+    GamePlayState = false;
+    GameOverState = true;
+    Mix_PlayMusic(dieSound, 1);
+    ScoreUpdate();
+    SDL_Delay(500);
+    FPS = 144;
 }
 
 void GameLoop::PowerManager()
@@ -455,7 +474,6 @@ void GameLoop::ScoreUpdate()
         if(SCORE > highScore) {
             highScore = SCORE;
         }
-        SCORE = 0;
         std::ofstream write("assets/highscore.txt");
         write << highScore;
         write.close();
@@ -473,20 +491,10 @@ void GameLoop::Update() {
             pipes[0].Horizontal_Move();
             pipes[1].Horizontal_Move();
             pipes[2].Horizontal_Move();
-            if(SCORE >=8 && SCORE <= 15)
-            {
+            if(SCORE >=10){
                 pipes[0].Vertical_Move();
                 pipes[1].Vertical_Move();
                 pipes[2].Vertical_Move();
-            }
-            if(SCORE >=15)
-            {
-                pipes[0].Vertical_Move();
-                pipes[1].Vertical_Move();
-                pipes[2].Vertical_Move();
-                pipes[0].Angle_Update();
-                pipes[1].Angle_Update();
-                pipes[2].Angle_Update();
             }
             //Power
             powers[current_power].Update();
@@ -499,7 +507,7 @@ void GameLoop::Update() {
             //Test
             score.WriteText(to_string(SCORE), scoreFont, white, renderer);
             highestScore.WriteText(to_string(SCORE), scoreFont, white, renderer);
-            heart_object.WriteText("x" + to_string(heart_cnt), scoreFont, white, renderer);
+            heart_object.WriteText("X" + to_string(heart_cnt), scoreFont, white, renderer);
             CollisionManager();
         }
 
@@ -579,6 +587,16 @@ void GameLoop::Render() {
         exitButton->Render(renderer);
         score.Render(renderer);
         highestScore.Render(renderer);
+        if(SCORE <= 5)
+        {
+            bronze.Render(renderer);
+        }else if(SCORE <= 10)
+        {
+            silver.Render(renderer);
+        }else
+        {
+            gold.Render(renderer);
+        }
     }
     mouse->Render(renderer);
     SDL_RenderPresent(renderer);
@@ -586,6 +604,7 @@ void GameLoop::Render() {
 
 
 void GameLoop::NewGame() {
+    SCORE = 0;
     isGameOver = false;
     isPlaying = false;
     bird.Reset();

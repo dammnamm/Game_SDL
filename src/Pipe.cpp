@@ -80,11 +80,6 @@ void Pipe::SetPosition( int index) {
     }
 }
 
-void Pipe::Angle_Update()
-{
-    angle = -45;
-    Space = 100;
-}
 
 void Pipe::Reset(int index)
 {
@@ -118,5 +113,4 @@ void Pipe::Render(SDL_Renderer* renderer)
     {
         SDL_RenderCopyEx(renderer, getTexture(), &getSrc(), &getUpperDest(), - angle, NULL, SDL_FLIP_VERTICAL );
     }
-    SDL_RenderDrawLine(renderer, getUpperDest().x, getUpperDest().y, getUpperDest().x + getUpperDest().w, getUpperDest().y + getUpperDest().h );
 }

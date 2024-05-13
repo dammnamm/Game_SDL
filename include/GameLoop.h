@@ -114,6 +114,10 @@ private:
     const int messageWidth = 432;
     const int messageHeight = 50;
     std::string text = "PRESS SPACE TO JUMP";
+    //Object
+    Object bronze;
+    Object silver;
+    Object gold;
 public:
     // Constructor
     GameLoop();
