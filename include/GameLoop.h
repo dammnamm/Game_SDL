@@ -94,6 +94,7 @@ private:
     Mix_Music* bgSound;
     Mix_Music* inGameSound;
     Mix_Chunk* power_collect_sounds;
+    Mix_Chunk* collide_sound;
     bool PlaySound = true;
     //Power
     Power titan;

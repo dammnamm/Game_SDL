@@ -187,6 +187,7 @@ void GameLoop::Initialize()
             inGameSound = Mix_LoadMUS("assets/sound/ingame.mp3");
             scoreSound = Mix_LoadWAV("assets/sound/scoresound.wav");
             power_collect_sounds = Mix_LoadWAV("assets/sound/power_collection.wav");
+            collide_sound = Mix_LoadWAV("assets/sound/collide_sound.wav");
         }
     }
 }
@@ -349,6 +350,10 @@ void GameLoop::CollisionManager() {
                 CheckCollision(bird.getDest(), pipes[i].getLowerDest())) {
                 if (!pipes[i].isCollide) {
                     heart_cnt -= 1;
+                    if(heart_cnt > 0)
+                    {
+                        Mix_PlayChannel(-1, collide_sound, 0);
+                    }
                     pipes[i].isCollide = true;
                 }
                 break;
